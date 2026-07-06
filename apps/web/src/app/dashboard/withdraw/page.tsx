@@ -1,50 +1,33 @@
-"use client";
+import { auth } from "@/lib/auth";
+import { getUserWallet, getTransactionsInRange } from "@/lib/indexer";
+import { Card, PageHeader } from "@/components/ui";
+import { KycStatusCard } from "@/components/kyc-status-card";
+import { WithdrawForm } from "./withdraw-form";
 
-import { useState } from "react";
-import { startWithdrawal } from "@/app/actions/withdraw";
-import { Nav, Card, Button, Input } from "@/components/ui";
+function sumUsdc(amounts: string[]): string {
+  const total = amounts.reduce((sum, a) => sum + (parseFloat(a) || 0), 0);
+  return total.toFixed(7).replace(/\.?0+$/, "") || "0";
+}
 
-export default function WithdrawPage() {
-  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
-    const res = await startWithdrawal(new FormData(e.currentTarget));
-    if ("error" in res && res.error) {
-      setError(res.error);
-      return;
-    }
-    if ("ok" in res && res.ok) {
-      setRedirectUrl(res.redirectUrl);
-      window.open(res.redirectUrl, "_blank");
-    }
-  }
+export default async function WithdrawPage() {
+  const session = await auth();
+  const wallet = await getUserWallet(session!.user!.id);
+  const kycComplete = wallet?.anchorKycComplete ?? false;
 
   return (
-    <div>
-      <Nav />
-      <main className="mx-auto max-w-xl space-y-6 p-6">
-        <Card title="Off-ramp to PHP (PRD-F3)">
-          <p className="mb-4 text-sm text-[#6B6B63]">
-            Starts SEP-24 flow via active anchor provider (mock in dev).
-          </p>
-          <form onSubmit={onSubmit} className="flex flex-col gap-3">
-            <Input name="amountUsdc" placeholder="Amount USDC" required />
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <Button type="submit">Start withdrawal</Button>
-          </form>
-          {redirectUrl && (
-            <p className="mt-4 text-sm">
-              Anchor session opened:{" "}
-              <a className="text-[#0D6E4F]" href={redirectUrl}>
-                Continue
-              </a>
-            </p>
-          )}
+    <div className="mx-auto max-w-lg space-y-8">
+      <PageHeader
+        title="Withdraw to bank"
+        description="Convert USDC to local currency via our anchor partner."
+      />
+
+      {!kycComplete ? (
+        <Card title="Identity verification required">
+          <KycStatusCard complete={false} />
         </Card>
-      </main>
+      ) : (
+        <WithdrawForm />
+      )}
     </div>
   );
 }

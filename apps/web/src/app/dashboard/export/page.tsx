@@ -1,30 +1,35 @@
-import { Nav, Card } from "@/components/ui";
+import { auth } from "@/lib/auth";
+import { getTransactionsInRange } from "@/lib/indexer";
+import { Card, PageHeader } from "@/components/ui";
+import { ExportPanel } from "@/components/dashboard/export-panel";
 
-export default function ExportPage() {
+function sumUsdc(amounts: string[]): string {
+  const total = amounts.reduce((sum, a) => sum + (parseFloat(a) || 0), 0);
+  return total.toFixed(7).replace(/\.?0+$/, "") || "0";
+}
+
+export default async function ExportPage() {
+  const session = await auth();
+  const to = new Date();
+  const from = new Date();
+  from.setMonth(from.getMonth() - 6);
+
+  const txs = await getTransactionsInRange(session!.user!.id, from, to);
+  const totalUsdc = sumUsdc(txs.map((tx) => tx.amountUsdc));
+
   return (
-    <div>
-      <Nav />
-      <main className="mx-auto max-w-xl space-y-6 p-6">
-        <Card title="Income export (PRD-F4)">
-          <p className="mb-4 text-sm text-[#6B6B63]">
-            Download your last 6 months of on-chain USDC receipts.
-          </p>
-          <div className="flex gap-3">
-            <a
-              href="/api/export?format=csv&months=6"
-              className="rounded-lg bg-[#0D6E4F] px-4 py-2 text-sm font-medium text-white"
-            >
-              Download CSV
-            </a>
-            <a
-              href="/api/export?format=pdf&months=6"
-              className="rounded-lg border border-[#d4d4ce] px-4 py-2 text-sm"
-            >
-              Download PDF (HTML)
-            </a>
-          </div>
-        </Card>
-      </main>
+    <div className="mx-auto max-w-xl space-y-8">
+      <PageHeader
+        title="Income export"
+        description="Download your on-chain USDC receipts for tax or accounting."
+      />
+      <Card title="Export payments">
+        <p className="mb-6 text-sm text-[var(--color-muted)]">
+          Exports include date, amount, sender address, and transaction hash
+          for each confirmed payment.
+        </p>
+        <ExportPanel paymentCount={txs.length} totalUsdc={totalUsdc} />
+      </Card>
     </div>
   );
 }

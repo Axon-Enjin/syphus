@@ -2,8 +2,9 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { getDb, users } from "@gig-payout/db";
+import { getDb, users, wallets } from "@gig-payout/db";
 import { z } from "zod";
+import { getTrustlineReadyForUser } from "./auth-helpers";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -36,10 +37,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
         if (!valid) return null;
 
+        // Fetch wallet to get trustline status
+        const [wallet] = await db
+          .select({ trustlineReady: wallets.trustlineReady })
+          .from(wallets)
+          .where(eq(wallets.userId, user.id))
+          .limit(1);
+
         return {
           id: user.id,
           email: user.email,
           name: user.name ?? undefined,
+          trustlineReady: wallet?.trustlineReady ?? false,
         };
       },
     }),
@@ -49,15 +58,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login",
   },
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.sub = user.id;
+        token.trustlineReady =
+          (user as { trustlineReady?: boolean }).trustlineReady ?? false;
+      }
+      if (trigger === "update" && token.sub) {
+        token.trustlineReady = await getTrustlineReadyForUser(token.sub);
       }
       return token;
     },
     session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
+        session.user.trustlineReady = token.trustlineReady as boolean;
       }
       return session;
     },

@@ -28,7 +28,7 @@ export function transactionsToPdfHtml(
 
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>Income Report</title>
-<style>body{font-family:IBM Plex Sans,sans-serif;padding:40px;color:#1A1A18}table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #ddd;padding:8px;text-align:left}h1{color:#0D6E4F}</style>
+<style>body{font-family:IBM Plex Sans,sans-serif;padding:40px;color:#1a1a18}table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e8e8e4;padding:8px;text-align:left}h1{color:#0d6e4f}</style>
 </head><body>
 <h1>Gig Payout Income Report</h1>
 <p>Recipient: ${userName}</p>

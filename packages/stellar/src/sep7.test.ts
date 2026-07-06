@@ -1,11 +1,10 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { Keypair } from "@stellar/stellar-sdk";
-import { buildSep7Uri, isValidPublicKey } from "./index";
+import { buildSep7Uri, isValidPublicKey, TESTNET_USDC_ISSUER } from "./index";
 
 describe("buildSep7Uri", () => {
   beforeEach(() => {
-    process.env.USDC_ISSUER =
-      "GBBD47IF6LOC7NZ6EOWAYGKB4YJ2GTX3GPTQ2Y3HXDMFHPHTV5SSYFHI";
+    process.env.USDC_ISSUER = TESTNET_USDC_ISSUER;
     process.env.STELLAR_NETWORK = "testnet";
   });
 

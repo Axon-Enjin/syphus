@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { getDb, paymentLinks, wallets } from "@gig-payout/db";
+import { getDb, paymentLinks, wallets, users } from "@gig-payout/db";
 import { buildSep7Uri } from "@gig-payout/stellar";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
@@ -76,10 +76,11 @@ export async function getPaymentLinkBySlug(slug: string) {
       memo: paymentLinks.memo,
       label: paymentLinks.label,
       publicKey: wallets.publicKey,
-      userName: wallets.userId,
+      userName: users.name,
     })
     .from(paymentLinks)
     .innerJoin(wallets, eq(paymentLinks.userId, wallets.userId))
+    .innerJoin(users, eq(paymentLinks.userId, users.id))
     .where(eq(paymentLinks.slug, slug))
     .limit(1);
 

@@ -27,7 +27,7 @@ export const wallets = pgTable("wallets", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   publicKey: varchar("public_key", { length: 56 }).notNull().unique(),
-  encryptedSecret: text("encrypted_secret").notNull(),
+  encryptedSecret: text("encrypted_secret"),
   trustlineReady: boolean("trustline_ready").notNull().default(false),
   anchorKycComplete: boolean("anchor_kyc_complete").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

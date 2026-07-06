@@ -1,20 +1,43 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { createPaymentLink } from "@/app/actions/payments";
-import { Nav, Card, Button, Input } from "@/components/ui";
+import { Card, Input, PageHeader, FieldLabel } from "@/components/ui";
+import { LoadingButton } from "@/components/ui-interactive";
+import {
+  PaymentLinkCard,
+  TrustlineGate,
+} from "@/components/payment-link-card";
+import { PayPreview } from "@/components/dashboard/pay-preview";
 
 export default function PayLinkPage() {
+  const { data: session } = useSession();
+  const trustlineReady = session?.user?.trustlineReady ?? false;
+  const freelancerName =
+    session?.user?.email?.split("@")[0] ?? "Your name";
+
   const [result, setResult] = useState<{
     checkoutUrl: string;
     sep7Uri: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const [label, setLabel] = useState("");
+  const [amountUsdc, setAmountUsdc] = useState("");
+  const [memo, setMemo] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
+    setLoading(true);
+    setResult(null);
+
     const res = await createPaymentLink(new FormData(e.currentTarget));
+
+    setLoading(false);
+
     if ("error" in res && res.error) {
       setError(res.error);
       return;
@@ -25,30 +48,92 @@ export default function PayLinkPage() {
   }
 
   return (
-    <div>
-      <Nav />
-      <main className="mx-auto max-w-xl space-y-6 p-6">
-        <Card title="Generate payment link (PRD-F2)">
-          <form onSubmit={onSubmit} className="flex flex-col gap-3">
-            <Input name="label" placeholder="Invoice label (optional)" />
-            <Input name="amountUsdc" placeholder="Amount USDC (optional)" />
-            <Input name="memo" placeholder="Memo (optional, max 28)" maxLength={28} />
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <Button type="submit">Create link</Button>
-          </form>
-          {result && (
-            <div className="mt-4 space-y-2 rounded-lg bg-[#fafaf8] p-4 text-sm">
-              <p>
-                Checkout:{" "}
-                <a className="text-[#0D6E4F]" href={result.checkoutUrl}>
-                  {result.checkoutUrl}
-                </a>
-              </p>
-              <p className="mono break-all text-xs">{result.sep7Uri}</p>
-            </div>
-          )}
+    <div className="space-y-8">
+      <PageHeader
+        title="Payment link"
+        description="Create a link your client can use to pay you in USDC."
+      />
+
+      {!trustlineReady ? (
+        <Card title="Setup required">
+          <TrustlineGate />
         </Card>
-      </main>
+      ) : (
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+          <div>
+            <Card title="Generate payment link">
+              <form onSubmit={onSubmit} className="flex flex-col gap-4">
+                <div>
+                  <FieldLabel htmlFor="label">
+                    Invoice label (optional)
+                  </FieldLabel>
+                  <Input
+                    id="label"
+                    name="label"
+                    placeholder="e.g. March retainer"
+                    value={label}
+                    onChange={(e) => setLabel(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <FieldLabel htmlFor="amountUsdc">
+                    Amount USDC (optional)
+                  </FieldLabel>
+                  <Input
+                    id="amountUsdc"
+                    name="amountUsdc"
+                    placeholder="e.g. 500"
+                    value={amountUsdc}
+                    onChange={(e) => setAmountUsdc(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <FieldLabel htmlFor="memo">
+                    Memo (optional, max 28 chars)
+                  </FieldLabel>
+                  <Input
+                    id="memo"
+                    name="memo"
+                    placeholder="e.g. INV-001"
+                    maxLength={28}
+                    value={memo}
+                    onChange={(e) => setMemo(e.target.value)}
+                  />
+                </div>
+                {error && (
+                  <p className="text-sm text-red-700" role="alert">
+                    {error}
+                  </p>
+                )}
+                <LoadingButton
+                  type="submit"
+                  loading={loading}
+                  loadingLabel="Creating link…"
+                >
+                  Create link
+                </LoadingButton>
+              </form>
+            </Card>
+
+            {result && (
+              <div className="mt-6">
+                <p className="text-eyebrow mb-2">Your link</p>
+                <PaymentLinkCard
+                  checkoutUrl={result.checkoutUrl}
+                  sep7Uri={result.sep7Uri}
+                />
+              </div>
+            )}
+          </div>
+
+          <PayPreview
+            label={label}
+            amountUsdc={amountUsdc}
+            memo={memo}
+            freelancerName={freelancerName}
+          />
+        </div>
+      )}
     </div>
   );
 }

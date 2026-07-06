@@ -1,7 +1,13 @@
 import { Providers } from "@/components/providers";
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { DM_Sans, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+
+const display = DM_Sans({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+});
 
 const sans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -16,8 +22,9 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gig Payout",
-  description: "USDC payment rail for crypto-native teams paying PH contractors",
+  title: "Gig Payout — USDC payments for PH contractors",
+  description:
+    "Invoice links, bank withdrawals, and income history for freelancers paid in USDC on Stellar.",
 };
 
 export default function RootLayout({
@@ -27,7 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${mono.variable} antialiased`}>
+      <body
+        className={`${display.variable} ${sans.variable} ${mono.variable} antialiased`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>
