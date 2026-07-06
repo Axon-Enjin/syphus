@@ -1,0 +1,16 @@
+{
+  "name": "gig-payout",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @gig-payout/web dev",
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "db:generate": "pnpm --filter @gig-payout/db generate",
+    "db:migrate": "pnpm --filter @gig-payout/db migrate"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

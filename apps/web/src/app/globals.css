@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #fafaf8;
+  --color-surface: #ffffff;
+  --color-text: #1a1a18;
+  --color-muted: #6b6b63;
+  --color-accent: #0d6e4f;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+code,
+.mono {
+  font-family: var(--font-mono), monospace;
+}
