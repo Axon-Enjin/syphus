@@ -13,15 +13,19 @@ vi.mock("@gig-payout/stellar", () => ({
   fetchPayments: (...args: unknown[]) => mockFetchPayments(...args),
 }));
 
-vi.mock("@gig-payout/db", () => ({
-  getDb: () => ({
-    select: mockSelect,
-    insert: mockInsert,
-  }),
-  wallets: { id: "id" },
-  transactions: { id: "id", transactionHash: "transaction_hash" },
-  indexerCursors: { walletId: "wallet_id" },
-}));
+vi.mock("@gig-payout/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@gig-payout/db")>();
+  return {
+    ...actual,
+    getDb: () => ({
+      select: mockSelect,
+      insert: mockInsert,
+    }),
+    wallets: { id: "id" },
+    transactions: { id: "id", transactionHash: "transaction_hash" },
+    indexerCursors: { walletId: "wallet_id" },
+  };
+});
 
 describe("indexAllWallets", () => {
   beforeEach(() => {

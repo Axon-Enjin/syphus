@@ -213,13 +213,36 @@ export async function addUsdcTrustline(
   try {
     account = await server.loadAccount(publicKey);
   } catch (err) {
-    return {
-      success: false,
-      error:
-        err instanceof Error
-          ? `Account not found or not funded: ${err.message}`
-          : "Account not found on network",
-    };
+    if (isTestnet()) {
+      const funded = await fundTestnetAccount(publicKey);
+      if (funded.ok) {
+        await new Promise((r) => setTimeout(r, 1500));
+        try {
+          account = await server.loadAccount(publicKey);
+        } catch (retryErr) {
+          return {
+            success: false,
+            error:
+              retryErr instanceof Error
+                ? `Account not funded: ${retryErr.message}`
+                : "Account not found on network after Friendbot",
+          };
+        }
+      } else {
+        return {
+          success: false,
+          error: funded.error ?? "Account not funded on testnet",
+        };
+      }
+    } else {
+      return {
+        success: false,
+        error:
+          err instanceof Error
+            ? `Account not found or not funded: ${err.message}`
+            : "Account not found on network",
+      };
+    }
   }
 
   const usdcAsset = new Asset("USDC", getUsdcIssuer());
@@ -270,13 +293,38 @@ export async function buildUnsignedTrustlineTx(
     try {
       account = await server.loadAccount(publicKey);
     } catch (err) {
-      return {
-        success: false,
-        error:
-          err instanceof Error
-            ? `Account not found or not funded: ${err.message}`
-            : "Account not found on network",
-      };
+      if (isTestnet()) {
+        const funded = await fundTestnetAccount(publicKey);
+        if (funded.ok) {
+          await new Promise((r) => setTimeout(r, 1500));
+          try {
+            account = await server.loadAccount(publicKey);
+          } catch (retryErr) {
+            return {
+              success: false,
+              error:
+                retryErr instanceof Error
+                  ? `Account not funded: ${retryErr.message}`
+                  : "Account not found on network after Friendbot",
+            };
+          }
+        } else {
+          return {
+            success: false,
+            error:
+              funded.error ??
+              "Account not funded. Visit friendbot.stellar.org to fund your wallet with testnet XLM.",
+          };
+        }
+      } else {
+        return {
+          success: false,
+          error:
+            err instanceof Error
+              ? `Account not found or not funded: ${err.message}`
+              : "Account not found on network",
+        };
+      }
     }
 
     const usdcAsset = new Asset("USDC", getUsdcIssuer());

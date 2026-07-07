@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { eq } from "@gig-payout/db";
 import { randomUUID } from "crypto";
 import { getDb, paymentLinks, wallets, users } from "@gig-payout/db";
 import { buildSep7Uri } from "@gig-payout/stellar";

@@ -1,11 +1,17 @@
-import { sql } from "drizzle-orm";
+import {
+  getActiveProviderId,
+  getOffRampStatus,
+  isOffRampPaused,
+} from "@gig-payout/anchors";
+import { sql } from "@gig-payout/db";
 import { NextResponse } from "next/server";
-import { getActiveProviderId } from "@gig-payout/anchors";
 
 export async function GET() {
+  const offRamp = getOffRampStatus();
   const checks: Record<string, string> = {
     app: "ok",
     anchor: getActiveProviderId(),
+    offRamp: offRamp.paused ? "paused" : "available",
   };
 
   let dbStatus = "skipped";
@@ -21,12 +27,16 @@ export async function GET() {
   }
 
   checks.database = dbStatus;
-  const healthy = dbStatus !== "error";
+
+  const healthy = dbStatus !== "error" && !isOffRampPaused();
+  const status =
+    dbStatus === "error" ? "degraded" : isOffRampPaused() ? "degraded" : "healthy";
 
   return NextResponse.json(
     {
-      status: healthy ? "healthy" : "degraded",
+      status,
       checks,
+      offRamp,
       timestamp: new Date().toISOString(),
     },
     { status: healthy ? 200 : 503 },

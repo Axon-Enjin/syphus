@@ -1,6 +1,7 @@
-import { eq } from "drizzle-orm";
+import { eq } from "@gig-payout/db";
 import { getDb, wallets } from "@gig-payout/db";
 
+export const SESSION_STRATEGY = "jwt" as const;
 export async function getTrustlineReadyForUser(
   userId: string,
 ): Promise<boolean> {

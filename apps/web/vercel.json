@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/index-payments",
       "schedule": "*/1 * * * *"
+    },
+    {
+      "path": "/api/cron/anchor-health",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

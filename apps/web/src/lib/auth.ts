@@ -1,10 +1,10 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { eq } from "@gig-payout/db";
 import { getDb, users, wallets } from "@gig-payout/db";
 import { z } from "zod";
-import { getTrustlineReadyForUser } from "./auth-helpers";
+import { getTrustlineReadyForUser, SESSION_STRATEGY } from "./auth-helpers";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -53,7 +53,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: SESSION_STRATEGY },
   pages: {
     signIn: "/login",
   },

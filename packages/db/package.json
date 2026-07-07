@@ -16,11 +16,12 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0",
-    "drizzle-orm": "^0.40.1"
+    "drizzle-orm": "^0.40.1",
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",
+    "@types/pg": "^8.20.0",
     "drizzle-kit": "^0.30.4",
     "typescript": "^5.9.3",
     "vitest": "^3.0.5"

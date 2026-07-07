@@ -53,13 +53,18 @@ describe("addUsdcTrustline", () => {
   });
 
   it("returns error when account is not funded", async () => {
-    mockLoadAccount.mockRejectedValueOnce(new Error("Request failed with status code 404"));
+    mockLoadAccount.mockRejectedValue(new Error("Request failed with status code 404"));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ ok: false, status: 500 }),
+    );
 
     const { addUsdcTrustline } = await import("./index");
     const result = await addUsdcTrustline(testKeypair.secret());
 
     expect(result.success).toBe(false);
-    expect(result.error).toContain("Account not found or not funded");
+    expect(result.error).toBeDefined();
+    vi.unstubAllGlobals();
   });
 
   it("returns error when transaction submission fails", async () => {

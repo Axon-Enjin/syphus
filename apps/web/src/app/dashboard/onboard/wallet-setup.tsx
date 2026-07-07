@@ -12,6 +12,8 @@ interface WalletSetupProps {
   trustlineReady: boolean;
   anchorKycComplete: boolean;
   isExternal: boolean;
+  horizonUrl: string;
+  networkPassphrase: string;
 }
 
 export function WalletSetup({
@@ -19,6 +21,8 @@ export function WalletSetup({
   trustlineReady: initialTrustlineReady,
   anchorKycComplete,
   isExternal,
+  horizonUrl,
+  networkPassphrase,
 }: WalletSetupProps) {
   const [trustlineReady, setTrustlineReady] = useState(initialTrustlineReady);
 
@@ -101,6 +105,8 @@ export function WalletSetup({
             </p>
             <TrustlineCheck
               isExternal={isExternal}
+              horizonUrl={horizonUrl}
+              networkPassphrase={networkPassphrase}
               onSuccess={handleTrustlineSuccess}
             />
           </div>

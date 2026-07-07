@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getTransactionsInRange } from "@/lib/indexer";
-import {
-  transactionsToCsv,
-  transactionsToPdfHtml,
-} from "@/lib/export";
-import { eq } from "drizzle-orm";
+import { transactionsToCsv, transactionsToPdf } from "@/lib/export";
+import { eq } from "@gig-payout/db";
 import { getDb, users } from "@gig-payout/db";
 
 export async function GET(request: Request) {
@@ -30,14 +27,16 @@ export async function GET(request: Request) {
       .from(users)
       .where(eq(users.id, session.user.id))
       .limit(1);
-    const html = transactionsToPdfHtml(
+
+    const pdfBytes = await transactionsToPdf(
       rows,
       user?.name ?? user?.email ?? "Freelancer",
     );
-    return new NextResponse(html, {
+
+    return new NextResponse(Buffer.from(pdfBytes), {
       headers: {
-        "Content-Type": "text/html",
-        "Content-Disposition": 'attachment; filename="income-report.html"',
+        "Content-Type": "application/pdf",
+        "Content-Disposition": 'attachment; filename="income-report.pdf"',
       },
     });
   }

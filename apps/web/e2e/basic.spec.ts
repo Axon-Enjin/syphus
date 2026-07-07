@@ -16,4 +16,5 @@ test("health endpoint", async ({ request }) => {
   const res = await request.get("/api/health");
   const body = await res.json();
   expect(body.checks.app).toBe("ok");
+  expect(body.checks.offRamp).toBeTruthy();
 });

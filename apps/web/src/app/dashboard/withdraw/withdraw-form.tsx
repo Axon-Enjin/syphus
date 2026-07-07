@@ -12,7 +12,7 @@ import {
 import { LoadingButton } from "@/components/ui-interactive";
 import { formatPhpApprox } from "@/lib/php-display";
 
-export function WithdrawForm() {
+export function WithdrawForm({ disabled = false }: { disabled?: boolean }) {
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -93,6 +93,7 @@ export function WithdrawForm() {
           type="submit"
           loading={loading}
           loadingLabel="Starting withdrawal…"
+          disabled={disabled}
         >
           Start withdrawal
         </LoadingButton>

@@ -1,8 +1,7 @@
 "use server";
 
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
-import { getDb, users, wallets } from "@gig-payout/db";
+import { getDb, users, wallets, withDbRetry, eq } from "@gig-payout/db";
 import { generateKeypair, checkUsdcTrustline, addUsdcTrustline, isValidPublicKey, fundTestnetAccount, isTestnet } from "@gig-payout/stellar";
 import { z } from "zod";
 import { encryptSecret } from "@/lib/crypto";
@@ -67,67 +66,80 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
     return { fieldErrors: { stellarAddress: "Invalid Stellar public key" } };
   }
 
-  const db = getDb();
-  const email = parsed.data.email.toLowerCase();
+  try {
+    return await withDbRetry(async () => {
+      const db = getDb();
+      const email = parsed.data.email.toLowerCase();
 
-  const existing = await db
-    .select({ id: users.id })
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+      const existing = await db
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
 
-  if (existing.length > 0) {
-    return { fieldErrors: { email: "Email already registered" } };
+      if (existing.length > 0) {
+        return { fieldErrors: { email: "Email already registered" } };
+      }
+
+      if (stellarAddress) {
+        const existingWallet = await db
+          .select({ id: wallets.id })
+          .from(wallets)
+          .where(eq(wallets.publicKey, stellarAddress))
+          .limit(1);
+
+        if (existingWallet.length > 0) {
+          return {
+            fieldErrors: {
+              stellarAddress:
+                "This Stellar address is already linked to another account",
+            },
+          };
+        }
+      }
+
+      const passwordHash = await bcrypt.hash(parsed.data.password, 12);
+
+      let publicKey: string;
+      let encryptedSecretValue: string | null = null;
+
+      if (stellarAddress) {
+        publicKey = stellarAddress;
+      } else {
+        const keypair = generateKeypair();
+        publicKey = keypair.publicKey;
+        encryptedSecretValue = encryptSecret(keypair.secretKey);
+      }
+
+      const [user] = await db
+        .insert(users)
+        .values({
+          email,
+          name: parsed.data.name,
+          passwordHash,
+        })
+        .returning({ id: users.id });
+
+      await db.insert(wallets).values({
+        userId: user.id,
+        publicKey,
+        encryptedSecret: encryptedSecretValue,
+        trustlineReady: false,
+      });
+
+      if (isTestnet()) {
+        await fundTestnetAccount(publicKey);
+      }
+
+      return { ok: true as const };
+    });
+  } catch (err) {
+    console.error("registerUser database error:", err);
+    return {
+      error:
+        "Could not reach the database. Check your network and try again in a few seconds.",
+    };
   }
-
-  // Check if Stellar address is already in use
-  if (stellarAddress) {
-    const existingWallet = await db
-      .select({ id: wallets.id })
-      .from(wallets)
-      .where(eq(wallets.publicKey, stellarAddress))
-      .limit(1);
-
-    if (existingWallet.length > 0) {
-      return { fieldErrors: { stellarAddress: "This Stellar address is already linked to another account" } };
-    }
-  }
-
-  const passwordHash = await bcrypt.hash(parsed.data.password, 12);
-
-  // Use external wallet if provided, otherwise generate one
-  let publicKey: string;
-  let encryptedSecretValue: string | null = null;
-
-  if (stellarAddress) {
-    publicKey = stellarAddress;
-  } else {
-    const keypair = generateKeypair();
-    publicKey = keypair.publicKey;
-    encryptedSecretValue = encryptSecret(keypair.secretKey);
-  }
-
-  const [user] = await db
-    .insert(users)
-    .values({
-      email,
-      name: parsed.data.name,
-      passwordHash,
-    })
-    .returning({ id: users.id });
-
-  await db.insert(wallets).values({
-    userId: user.id,
-    publicKey,
-    encryptedSecret: encryptedSecretValue,
-    trustlineReady: false,
-  });
-
-  if (!stellarAddress && isTestnet()) {
-    await fundTestnetAccount(publicKey);
-  }
-
-  return { ok: true };
 }
 
 /**

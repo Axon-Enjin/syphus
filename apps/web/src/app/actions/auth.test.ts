@@ -1,7 +1,8 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
 // Mock dependencies before importing the module under test
-vi.mock("@gig-payout/db", () => {
+vi.mock("@gig-payout/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@gig-payout/db")>();
   const mockDb = {
     select: vi.fn().mockReturnThis(),
     from: vi.fn().mockReturnThis(),
@@ -14,6 +15,7 @@ vi.mock("@gig-payout/db", () => {
     set: vi.fn().mockReturnThis(),
   };
   return {
+    ...actual,
     getDb: () => mockDb,
     users: { id: "id", email: "email" },
     wallets: {
@@ -22,6 +24,7 @@ vi.mock("@gig-payout/db", () => {
       publicKey: "public_key",
       trustlineReady: "trustline_ready",
     },
+    withDbRetry: async <T>(fn: () => Promise<T>) => fn(),
     __mockDb: mockDb,
   };
 });

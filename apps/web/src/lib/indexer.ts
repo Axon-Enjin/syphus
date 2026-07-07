@@ -1,4 +1,4 @@
-import { eq, desc, and, gte, lte } from "drizzle-orm";
+import { eq, desc, and, gte, lte } from "@gig-payout/db";
 import {
   getDb,
   wallets,

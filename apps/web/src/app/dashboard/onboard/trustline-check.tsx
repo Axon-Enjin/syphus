@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 
 interface TrustlineCheckProps {
   isExternal: boolean;
+  horizonUrl: string;
+  networkPassphrase: string;
   onSuccess?: () => void;
 }
 
@@ -40,7 +42,30 @@ function buildProgress(
   }));
 }
 
-export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
+async function verifyWithRetry(maxAttempts = 6, delayMs = 2000) {
+  let last = await verifyTrustline();
+  if (last.ready) return last;
+  if (last.error === "Not authenticated" || last.error === "No wallet found") {
+    return last;
+  }
+
+  for (let i = 1; i < maxAttempts; i++) {
+    await new Promise((r) => setTimeout(r, delayMs));
+    last = await verifyTrustline();
+    if (last.ready) return last;
+    if (last.error === "Not authenticated" || last.error === "No wallet found") {
+      return last;
+    }
+  }
+  return last;
+}
+
+export function TrustlineCheck({
+  isExternal,
+  horizonUrl,
+  networkPassphrase,
+  onSuccess,
+}: TrustlineCheckProps) {
   const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -49,10 +74,11 @@ export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
 
   async function completeTrustline() {
     setActiveStep(isExternal ? 3 : 2);
-    const verifyResult = await verifyTrustline();
+    const verifyResult = await verifyWithRetry();
     if (!verifyResult.ready) {
       setError(
-        "Trustline submitted but verification pending. Try again in a moment.",
+        verifyResult.error ??
+          "Trustline not detected yet. If you already signed in Freighter, click “Verify USDC trustline” below.",
       );
       setLoading(false);
       return;
@@ -63,13 +89,23 @@ export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
     setLoading(false);
   }
 
+  async function handleVerifyOnly() {
+    setLoading(true);
+    setError(null);
+    try {
+      await completeTrustline();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Verification failed");
+      setLoading(false);
+    }
+  }
+
   async function handleFreighterSign() {
     setLoading(true);
     setError(null);
     setActiveStep(0);
 
     try {
-      setActiveStep(0);
       const { xdr, error: buildError } = await buildTrustlineXdr();
       if (buildError || !xdr) {
         setError(buildError ?? "Failed to build transaction");
@@ -90,7 +126,7 @@ export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
 
       const { signTransaction } = await import("@stellar/freighter-api");
       const { signedTxXdr, error: signError } = await signTransaction(xdr, {
-        networkPassphrase: "Test SDF Network ; September 2015",
+        networkPassphrase,
       });
 
       if (signError) {
@@ -100,19 +136,18 @@ export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
       }
 
       setActiveStep(2);
-      const res = await fetch(
-        "https://horizon-testnet.stellar.org/transactions",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `tx=${encodeURIComponent(signedTxXdr)}`,
-        },
-      );
+      const res = await fetch(`${horizonUrl}/transactions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `tx=${encodeURIComponent(signedTxXdr)}`,
+      });
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
         const detail =
-          data?.extras?.result_codes?.operations?.[0] ?? "Submission failed";
+          data?.extras?.result_codes?.operations?.[0] ??
+          data?.detail ??
+          "Submission failed";
         setError(`Transaction failed: ${detail}`);
         setLoading(false);
         return;
@@ -153,7 +188,9 @@ export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
     return (
       <div className="space-y-3">
         <p className="text-sm text-[var(--color-muted)]">
-          Sign a transaction in Freighter to enable USDC on your wallet.
+          Sign a transaction in Freighter to enable USDC on your wallet. Make
+          sure Freighter is set to <strong>Testnet</strong> and this account has
+          testnet XLM for fees.
         </p>
         <LoadingButton
           onClick={handleFreighterSign}
@@ -162,8 +199,22 @@ export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
         >
           Enable USDC with Freighter
         </LoadingButton>
-        {loading && <ProgressSteps steps={buildProgress(stepLabels, activeStep)} />}
-        {error && <p className="text-sm text-red-700" role="alert">{error}</p>}
+        <button
+          type="button"
+          onClick={handleVerifyOnly}
+          disabled={loading}
+          className="btn-secondary focus-ring w-full disabled:opacity-50"
+        >
+          Verify USDC trustline
+        </button>
+        {loading && (
+          <ProgressSteps steps={buildProgress(stepLabels, activeStep)} />
+        )}
+        {error && (
+          <p className="text-sm text-red-700" role="alert">
+            {error}
+          </p>
+        )}
       </div>
     );
   }
@@ -181,8 +232,14 @@ export function TrustlineCheck({ isExternal, onSuccess }: TrustlineCheckProps) {
       >
         Enable USDC
       </LoadingButton>
-      {loading && <ProgressSteps steps={buildProgress(stepLabels, activeStep)} />}
-      {error && <p className="text-sm text-red-700" role="alert">{error}</p>}
+      {loading && (
+        <ProgressSteps steps={buildProgress(stepLabels, activeStep)} />
+      )}
+      {error && (
+        <p className="text-sm text-red-700" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

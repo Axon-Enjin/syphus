@@ -1,18 +1,20 @@
+import {
+  getOffRampStatus,
+  isOffRampPaused,
+} from "@gig-payout/anchors";
 import { auth } from "@/lib/auth";
-import { getUserWallet, getTransactionsInRange } from "@/lib/indexer";
+import { getUserWallet } from "@/lib/indexer";
 import { Card, PageHeader } from "@/components/ui";
 import { KycStatusCard } from "@/components/kyc-status-card";
 import { WithdrawForm } from "./withdraw-form";
-
-function sumUsdc(amounts: string[]): string {
-  const total = amounts.reduce((sum, a) => sum + (parseFloat(a) || 0), 0);
-  return total.toFixed(7).replace(/\.?0+$/, "") || "0";
-}
 
 export default async function WithdrawPage() {
   const session = await auth();
   const wallet = await getUserWallet(session!.user!.id);
   const kycComplete = wallet?.anchorKycComplete ?? false;
+  const trustlineReady = wallet?.trustlineReady ?? false;
+  const offRampPaused = isOffRampPaused();
+  const offRampStatus = getOffRampStatus();
 
   return (
     <div className="mx-auto max-w-lg space-y-8">
@@ -21,12 +23,44 @@ export default async function WithdrawPage() {
         description="Convert USDC to local currency via our anchor partner."
       />
 
-      {!kycComplete ? (
-        <Card title="Identity verification required">
-          <KycStatusCard complete={false} />
+      {offRampPaused && (
+        <div className="callout-warning p-4 text-sm" role="alert">
+          <p className="font-medium">Off-ramp temporarily paused</p>
+          <p className="mt-1 opacity-90">
+            Both anchor partners are unavailable right now. You can still receive USDC payments.
+            Withdrawals will reopen automatically when a partner recovers.
+          </p>
+        </div>
+      )}
+
+      {!offRampPaused && offRampStatus.activeProvider !== offRampStatus.primaryProvider && (
+        <div className="callout-warning p-4 text-sm">
+          <p>
+            Primary anchor is down. Withdrawals are routing through{" "}
+            <span className="font-medium">{offRampStatus.activeProvider}</span> until service
+            recovers.
+          </p>
+        </div>
+      )}
+
+      {!trustlineReady ? (
+        <Card title="Complete wallet setup first">
+          <p className="text-sm text-[var(--color-muted)]">
+            Add a USDC trustline before withdrawing.{" "}
+            <a href="/dashboard/onboard" className="link-accent">
+              Finish setup
+            </a>
+          </p>
         </Card>
       ) : (
-        <WithdrawForm />
+        <>
+          {!kycComplete && (
+            <Card title="First withdrawal">
+              <KycStatusCard complete={false} />
+            </Card>
+          )}
+          <WithdrawForm disabled={offRampPaused} />
+        </>
       )}
     </div>
   );
