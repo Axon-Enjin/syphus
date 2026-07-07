@@ -1,5 +1,5 @@
 import { eq } from "@gig-payout/db";
-import { getDb, wallets } from "@gig-payout/db";
+import { getDb, wallets, users } from "@gig-payout/db";
 
 export const SESSION_STRATEGY = "jwt" as const;
 export async function getTrustlineReadyForUser(
@@ -12,4 +12,14 @@ export async function getTrustlineReadyForUser(
     .where(eq(wallets.userId, userId))
     .limit(1);
   return wallet?.trustlineReady ?? false;
+}
+
+export async function getUserTier(userId: string): Promise<string> {
+  const db = getDb();
+  const [user] = await db
+    .select({ tier: users.tier })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  return user?.tier ?? "solo";
 }

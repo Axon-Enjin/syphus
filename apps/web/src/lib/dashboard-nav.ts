@@ -1,6 +1,7 @@
 export const primaryNavLinks = [
   { href: "/dashboard", label: "Dashboard", shortLabel: "Home" },
   { href: "/dashboard/pay", label: "Payment link", shortLabel: "Pay" },
+  { href: "/dashboard/batch", label: "Batch payout", shortLabel: "Batch" },
   { href: "/dashboard/withdraw", label: "Withdraw", shortLabel: "Withdraw" },
   { href: "/dashboard/export", label: "Export", shortLabel: "Export" },
 ] as const;

@@ -90,8 +90,38 @@ export const anchorHealth = pgTable("anchor_health", {
   failCount: integer("fail_count").notNull().default(0),
 });
 
+export const batches = pgTable("batches", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 255 }).notNull(),
+  status: varchar("status", { length: 32 }).notNull().default("pending"),
+  itemCount: integer("item_count").notNull().default(0),
+  totalUsdc: numeric("total_usdc", { precision: 18, scale: 7 }).notNull().default("0"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const batchItems = pgTable("batch_items", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  batchId: uuid("batch_id")
+    .notNull()
+    .references(() => batches.id, { onDelete: "cascade" }),
+  recipientName: varchar("recipient_name", { length: 255 }).notNull(),
+  destinationAddress: varchar("destination_address", { length: 56 }).notNull(),
+  amountUsdc: numeric("amount_usdc", { precision: 18, scale: 7 }).notNull(),
+  memo: varchar("memo", { length: 28 }),
+  sep7Uri: text("sep7_uri").notNull(),
+  status: varchar("status", { length: 32 }).notNull().default("pending"),
+  transactionHash: varchar("transaction_hash", { length: 64 }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Wallet = typeof wallets.$inferSelect;
 export type PaymentLink = typeof paymentLinks.$inferSelect;
 export type Transaction = typeof transactions.$inferSelect;
 export type Withdrawal = typeof withdrawals.$inferSelect;
+export type Batch = typeof batches.$inferSelect;
+export type BatchItem = typeof batchItems.$inferSelect;

@@ -37,10 +37,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
         if (!valid) return null;
 
-        // Fetch wallet to get trustline status
-        const [wallet] = await db
-          .select({ trustlineReady: wallets.trustlineReady })
+        const [userRow] = await db
+          .select({ trustlineReady: wallets.trustlineReady, tier: users.tier })
           .from(wallets)
+          .innerJoin(users, eq(wallets.userId, users.id))
           .where(eq(wallets.userId, user.id))
           .limit(1);
 
@@ -48,7 +48,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.name ?? undefined,
-          trustlineReady: wallet?.trustlineReady ?? false,
+          trustlineReady: userRow?.trustlineReady ?? false,
+          tier: userRow?.tier ?? "solo",
         };
       },
     }),
@@ -63,6 +64,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.sub = user.id;
         token.trustlineReady =
           (user as { trustlineReady?: boolean }).trustlineReady ?? false;
+        token.tier = (user as { tier?: string }).tier ?? "solo";
       }
       if (trigger === "update" && token.sub) {
         token.trustlineReady = await getTrustlineReadyForUser(token.sub);
@@ -73,6 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user && token.sub) {
         session.user.id = token.sub;
         session.user.trustlineReady = token.trustlineReady as boolean;
+        session.user.tier = (token.tier as string) ?? "solo";
       }
       return session;
     },

@@ -5,6 +5,7 @@ declare module "next-auth" {
     user: DefaultSession["user"] & {
       id: string;
       trustlineReady: boolean;
+      tier: string;
     };
   }
 }
@@ -13,5 +14,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     sub: string;
     trustlineReady: boolean;
+    tier: string;
   }
 }
