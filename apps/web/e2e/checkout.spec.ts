@@ -12,7 +12,7 @@ test.describe("Public landing", () => {
     await expect(page.getByText("Withdraw to bank")).toBeVisible();
     await expect(page.getByText("Export income")).toBeVisible();
     await expect(page.getByRole("link", { name: "Get started" }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: "Sign in" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Sign in" }).first()).toBeVisible();
   });
 
   test("home page shows how it works", async ({ page }) => {

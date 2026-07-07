@@ -3,16 +3,23 @@
 import { useState } from "react";
 import { sumPhpApprox } from "@/lib/php-display";
 
-interface ExportPanelProps {
+export type ExportMonthRange = 1 | 3 | 6 | 12;
+
+export interface ExportRangeStats {
   paymentCount: number;
   totalUsdc: string;
 }
 
-const monthOptions = [1, 3, 6, 12] as const;
+interface ExportPanelProps {
+  statsByMonths: Record<ExportMonthRange, ExportRangeStats>;
+}
 
-export function ExportPanel({ paymentCount, totalUsdc }: ExportPanelProps) {
-  const [months, setMonths] = useState<number>(6);
-  const { php, label } = sumPhpApprox([totalUsdc]);
+const monthOptions: ExportMonthRange[] = [1, 3, 6, 12];
+
+export function ExportPanel({ statsByMonths }: ExportPanelProps) {
+  const [months, setMonths] = useState<ExportMonthRange>(6);
+  const stats = statsByMonths[months];
+  const { php, label } = sumPhpApprox([stats.totalUsdc]);
 
   return (
     <div className="space-y-6">
@@ -39,11 +46,15 @@ export function ExportPanel({ paymentCount, totalUsdc }: ExportPanelProps) {
       </div>
 
       <p className="text-sm text-[var(--color-muted)]">
-        {paymentCount} payment{paymentCount === 1 ? "" : "s"} in range ·{" "}
+        {stats.paymentCount} payment{stats.paymentCount === 1 ? "" : "s"} in
+        last {months} {months === 1 ? "month" : "months"} ·{" "}
         <span className="font-medium text-[var(--color-text)]">
           {php} {label}
         </span>{" "}
         total
+      </p>
+      <p className="text-xs text-[var(--color-muted)]">
+        Download uses the selected range above.
       </p>
 
       <div className="flex flex-wrap gap-3">

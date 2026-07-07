@@ -26,6 +26,34 @@ export function getHorizonUrl(): string {
   );
 }
 
+/** Fund a testnet account with XLM via Friendbot (testnet only). */
+export async function fundTestnetAccount(
+  publicKey: string,
+): Promise<{ ok: boolean; error?: string }> {
+  if (process.env.STELLAR_NETWORK === "public") {
+    return { ok: false, error: "Friendbot is testnet only" };
+  }
+
+  try {
+    const res = await fetch(
+      `https://friendbot.stellar.org?addr=${encodeURIComponent(publicKey)}`,
+    );
+    if (!res.ok) {
+      return { ok: false, error: `Friendbot failed: ${res.status}` };
+    }
+    return { ok: true };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Friendbot request failed",
+    };
+  }
+}
+
+export function isTestnet(): boolean {
+  return process.env.STELLAR_NETWORK !== "public";
+}
+
 /** Circle USDC issuer on Stellar testnet (public, documented). */
 export const TESTNET_USDC_ISSUER =
   "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
@@ -105,6 +133,7 @@ export interface HorizonPayment {
   amount: string;
   created_at: string;
   transaction_successful: boolean;
+  memo?: string;
 }
 
 export async function fetchPayments(
@@ -149,6 +178,9 @@ export async function fetchPayments(
       amount: String(row.amount),
       created_at: String(row.created_at),
       transaction_successful: Boolean(row.transaction_successful ?? true),
+      memo: row.transaction_memo
+        ? String(row.transaction_memo).slice(0, 28)
+        : undefined,
     });
   }
 

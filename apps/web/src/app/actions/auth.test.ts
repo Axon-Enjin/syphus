@@ -32,6 +32,8 @@ vi.mock("@gig-payout/stellar", () => ({
     secretKey: "SABCDEFGHIJKLMNOPQRSTUVWXYZ234567890ABCDEFGHIJKLMNOPQ",
   }),
   checkUsdcTrustline: vi.fn(),
+  fundTestnetAccount: vi.fn().mockResolvedValue({ ok: true }),
+  isTestnet: vi.fn().mockReturnValue(true),
 }));
 
 vi.mock("@/lib/crypto", () => ({

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RefreshPayments } from "@/components/dashboard/refresh-payments";
 import { auth } from "@/lib/auth";
 import { getUserTransactions, getUserWallet } from "@/lib/indexer";
 import { PageHeader } from "@/components/ui";
@@ -40,15 +41,18 @@ export default async function DashboardPage() {
 
       <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-10">
         <section>
-          <div className="mb-4 flex items-baseline justify-between">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className="font-display text-lg font-semibold tracking-tight">
               Recent payments
             </h2>
-            {txs.length > 0 && (
-              <span className="text-xs text-[var(--color-muted)]">
-                {txs.length} total
-              </span>
-            )}
+            <div className="flex items-center gap-3">
+              {txs.length > 0 && (
+                <span className="text-xs text-[var(--color-muted)]">
+                  {txs.length} total
+                </span>
+              )}
+              <RefreshPayments />
+            </div>
           </div>
 
           {txs.length === 0 ? (

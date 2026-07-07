@@ -33,6 +33,9 @@ export default async function PublicCheckoutPage({
   const link = await getPaymentLinkBySlug(slug);
   if (!link) notFound();
 
+  const stellarNetwork =
+    process.env.STELLAR_NETWORK === "public" ? "public" : "testnet";
+
   return (
     <PublicLayout>
       <PublicCheckout
@@ -42,6 +45,7 @@ export default async function PublicCheckoutPage({
         memo={link.memo}
         publicKey={link.publicKey}
         sep7Uri={link.sep7Uri}
+        stellarNetwork={stellarNetwork}
       />
     </PublicLayout>
   );

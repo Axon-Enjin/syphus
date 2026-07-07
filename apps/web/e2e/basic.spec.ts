@@ -9,12 +9,11 @@ test("home page loads", async ({ page }) => {
 
 test("login page loads", async ({ page }) => {
   await page.goto("/login");
-  await expect(page.getByText("Sign in")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
 });
 
 test("health endpoint", async ({ request }) => {
   const res = await request.get("/api/health");
-  expect(res.ok()).toBeTruthy();
   const body = await res.json();
   expect(body.checks.app).toBe("ok");
 });

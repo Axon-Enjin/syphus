@@ -68,29 +68,33 @@ export async function createPaymentLink(formData: FormData) {
 }
 
 export async function getPaymentLinkBySlug(slug: string) {
-  const db = getDb();
-  const [row] = await db
-    .select({
-      slug: paymentLinks.slug,
-      amountUsdc: paymentLinks.amountUsdc,
-      memo: paymentLinks.memo,
-      label: paymentLinks.label,
-      publicKey: wallets.publicKey,
-      userName: users.name,
-    })
-    .from(paymentLinks)
-    .innerJoin(wallets, eq(paymentLinks.userId, wallets.userId))
-    .innerJoin(users, eq(paymentLinks.userId, users.id))
-    .where(eq(paymentLinks.slug, slug))
-    .limit(1);
+  try {
+    const db = getDb();
+    const [row] = await db
+      .select({
+        slug: paymentLinks.slug,
+        amountUsdc: paymentLinks.amountUsdc,
+        memo: paymentLinks.memo,
+        label: paymentLinks.label,
+        publicKey: wallets.publicKey,
+        userName: users.name,
+      })
+      .from(paymentLinks)
+      .innerJoin(wallets, eq(paymentLinks.userId, wallets.userId))
+      .innerJoin(users, eq(paymentLinks.userId, users.id))
+      .where(eq(paymentLinks.slug, slug))
+      .limit(1);
 
-  if (!row) return null;
+    if (!row) return null;
 
-  const sep7 = buildSep7Uri({
-    destination: row.publicKey,
-    amount: row.amountUsdc ?? undefined,
-    memo: row.memo ?? undefined,
-  });
+    const sep7 = buildSep7Uri({
+      destination: row.publicKey,
+      amount: row.amountUsdc ?? undefined,
+      memo: row.memo ?? undefined,
+    });
 
-  return { ...row, sep7Uri: sep7 };
+    return { ...row, sep7Uri: sep7 };
+  } catch {
+    return null;
+  }
 }

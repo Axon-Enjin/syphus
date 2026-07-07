@@ -7,21 +7,34 @@ import {
 } from "@gig-payout/db";
 import { fetchPayments } from "@gig-payout/stellar";
 
-export async function indexAllWallets() {
+export interface WalletIndexResult {
+  walletId: string;
+  publicKey: string;
+  newCount: number;
+  error?: string;
+}
+
+export async function indexAllWallets(): Promise<{
+  indexed: number;
+  wallets: WalletIndexResult[];
+}> {
   const db = getDb();
   const allWallets = await db.select().from(wallets);
   let indexed = 0;
+  const walletResults: WalletIndexResult[] = [];
 
   for (const wallet of allWallets) {
-    const [cursor] = await db
-      .select()
-      .from(indexerCursors)
-      .where(eq(indexerCursors.walletId, wallet.id))
-      .limit(1);
-
-    const pagingToken = cursor?.pagingToken ?? null;
+    let newCount = 0;
 
     try {
+      const [cursor] = await db
+        .select()
+        .from(indexerCursors)
+        .where(eq(indexerCursors.walletId, wallet.id))
+        .limit(1);
+
+      const pagingToken = cursor?.pagingToken ?? null;
+
       const { records, nextCursor } = await fetchPayments(
         wallet.publicKey,
         pagingToken,
@@ -30,7 +43,7 @@ export async function indexAllWallets() {
       for (const payment of records) {
         if (!payment.transaction_successful) continue;
 
-        await db
+        const inserted = await db
           .insert(transactions)
           .values({
             userId: wallet.userId,
@@ -38,11 +51,16 @@ export async function indexAllWallets() {
             transactionHash: payment.transaction_hash,
             senderAddress: payment.from,
             amountUsdc: payment.amount,
+            memo: payment.memo ?? null,
             stellarCreatedAt: new Date(payment.created_at),
           })
-          .onConflictDoNothing({ target: transactions.transactionHash });
+          .onConflictDoNothing({ target: transactions.transactionHash })
+          .returning({ id: transactions.id });
 
-        indexed += 1;
+        if (inserted.length > 0) {
+          newCount += 1;
+          indexed += 1;
+        }
       }
 
       if (nextCursor) {
@@ -57,12 +75,23 @@ export async function indexAllWallets() {
             set: { pagingToken: nextCursor, updatedAt: new Date() },
           });
       }
-    } catch {
-      // Horizon unavailable; skip wallet this cycle
+
+      walletResults.push({
+        walletId: wallet.id,
+        publicKey: wallet.publicKey,
+        newCount,
+      });
+    } catch (err) {
+      walletResults.push({
+        walletId: wallet.id,
+        publicKey: wallet.publicKey,
+        newCount: 0,
+        error: err instanceof Error ? err.message : "Index failed",
+      });
     }
   }
 
-  return { indexed };
+  return { indexed, wallets: walletResults };
 }
 
 export async function getUserTransactions(userId: string) {

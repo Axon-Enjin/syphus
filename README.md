@@ -23,6 +23,19 @@ pnpm lint
 
 **Requirements:** Node 22 LTS, pnpm 10+, PostgreSQL (Neon). Stellar testnet for live payment tests.
 
+### Payment indexing (M2 testnet loop)
+
+Run the dev server and indexer poller in parallel:
+
+```bash
+pnpm dev                 # terminal 1
+pnpm --filter @gig-payout/web dev:indexer   # terminal 2
+```
+
+Manual smoke: register → enable USDC trustline → create payment link → send testnet USDC from Freighter/Coinbase → payment row appears on dashboard within ~60s.
+
+Production: [`apps/web/vercel.json`](apps/web/vercel.json) runs `/api/cron/index-payments` every minute. Set `CRON_SECRET` in Vercel env; Vercel sends `Authorization: Bearer <CRON_SECRET>` on cron invocations.
+
 ## What it does
 
 - Freelancer Stellar wallet + SEP-7 payment links (PRD-F1, PRD-F2)

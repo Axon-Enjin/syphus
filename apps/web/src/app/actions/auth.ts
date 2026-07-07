@@ -3,7 +3,7 @@
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { getDb, users, wallets } from "@gig-payout/db";
-import { generateKeypair, checkUsdcTrustline, addUsdcTrustline, isValidPublicKey } from "@gig-payout/stellar";
+import { generateKeypair, checkUsdcTrustline, addUsdcTrustline, isValidPublicKey, fundTestnetAccount, isTestnet } from "@gig-payout/stellar";
 import { z } from "zod";
 import { encryptSecret } from "@/lib/crypto";
 import { auth } from "@/lib/auth";
@@ -122,6 +122,10 @@ export async function registerUser(formData: FormData): Promise<RegisterResult> 
     encryptedSecret: encryptedSecretValue,
     trustlineReady: false,
   });
+
+  if (!stellarAddress && isTestnet()) {
+    await fundTestnetAccount(publicKey);
+  }
 
   return { ok: true };
 }
