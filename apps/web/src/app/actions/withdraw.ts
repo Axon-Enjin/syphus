@@ -1,11 +1,11 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { getDb, wallets, withdrawals } from "@gig-payout/db";
+import { getDb, wallets, withdrawals } from "@syphus/db";
 import {
   getActiveProvider,
   getActiveProviderId,
-} from "@gig-payout/anchors";
+} from "@syphus/anchors";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
 

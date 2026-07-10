@@ -1,18 +1,18 @@
 # Subagent Definition (SAD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** Tech lead
 **Status:** Draft
 **Last reconciled:** N/A (not yet reconciled)
-**Sources:** [prd-gig-payout.md](prd-gig-payout.md), [sdd-gig-payout.md](sdd-gig-payout.md), [qad-gig-payout.md](qad-gig-payout.md)
+**Sources:** [prd-syphus.md](prd-syphus.md), [sdd-syphus.md](sdd-syphus.md), [qad-syphus.md](qad-syphus.md)
 
 ---
 
 ## 1. Purpose & Scope
 
-Define 5 development subagents for agentic implementation of Gig Payout v1. Each agent owns a bounded module with explicit doc traceability. Anti-sprawl: no agent without a PRD-F#, SDD component, or QAD matrix row.
+Define 5 development subagents for agentic implementation of Syphus v1. Each agent owns a bounded module with explicit doc traceability. Anti-sprawl: no agent without a PRD-F#, SDD component, or QAD matrix row.
 
 **Platforms:** Cursor (primary), Claude Code via `.claude/agents/`
 

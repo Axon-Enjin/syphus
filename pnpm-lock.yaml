@@ -10,13 +10,13 @@ importers:
 
   apps/web:
     dependencies:
-      '@gig-payout/anchors':
+      '@syphus/anchors':
         specifier: workspace:*
         version: link:../../packages/anchors
-      '@gig-payout/db':
+      '@syphus/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@gig-payout/stellar':
+      '@syphus/stellar':
         specifier: workspace:*
         version: link:../../packages/stellar
       bcryptjs:

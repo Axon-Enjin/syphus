@@ -1,12 +1,12 @@
 # QA & Test Plan (QAD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** QA lead
 **Status:** Draft
 **Last reconciled:** N/A (not yet reconciled)
-**Sources:** [prd-gig-payout.md](prd-gig-payout.md), [sdd-gig-payout.md](sdd-gig-payout.md)
+**Sources:** [prd-syphus.md](prd-syphus.md), [sdd-syphus.md](sdd-syphus.md)
 
 ---
 

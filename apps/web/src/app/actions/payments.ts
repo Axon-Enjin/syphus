@@ -2,8 +2,8 @@
 
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { getDb, paymentLinks, wallets } from "@gig-payout/db";
-import { buildSep7Uri } from "@gig-payout/stellar";
+import { getDb, paymentLinks, wallets } from "@syphus/db";
+import { buildSep7Uri } from "@syphus/stellar";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
 

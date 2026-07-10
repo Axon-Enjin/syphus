@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-6 px-6">
       <p className="text-sm font-medium uppercase tracking-wide text-[#0D6E4F]">
-        Gig Payout
+        Syphus
       </p>
       <h1 className="text-4xl font-semibold leading-tight">
         USDC payroll for your PH team. One link. PHP today.

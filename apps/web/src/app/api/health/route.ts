@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { getActiveProviderId } from "@gig-payout/anchors";
+import { getActiveProviderId } from "@syphus/anchors";
 
 export async function GET() {
   const checks: Record<string, string> = {
@@ -11,7 +11,7 @@ export async function GET() {
   let dbStatus = "skipped";
   if (process.env.DATABASE_URL) {
     try {
-      const { getDb } = await import("@gig-payout/db");
+      const { getDb } = await import("@syphus/db");
       const db = getDb();
       await db.execute(sql`SELECT 1`);
       dbStatus = "ok";

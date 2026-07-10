@@ -1,14 +1,14 @@
 # RFC: Anchor Orchestration & Off-Ramp Provider Abstraction
 
-**Project:** Gig Payout
-**RFC ID:** gig-payout-rfc-001
+**Project:** Syphus
+**RFC ID:** syphus-rfc-001
 **Date:** 2026-07-06
 **Version:** 1.0
 **Owner:** Tech lead
 **Status:** Locked
 **Last reconciled:** 2026-07-06
 **Feature:** PRD-F3 anchor off-ramp
-**Sources:** [sdd-gig-payout.md](sdd-gig-payout.md), [prd-gig-payout.md](prd-gig-payout.md)
+**Sources:** [sdd-syphus.md](sdd-syphus.md), [prd-syphus.md](prd-syphus.md)
 
 ---
 

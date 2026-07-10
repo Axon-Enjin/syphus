@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { getDb, users } from "@gig-payout/db";
+import { getDb, users } from "@syphus/db";
 import { z } from "zod";
 
 const loginSchema = z.object({

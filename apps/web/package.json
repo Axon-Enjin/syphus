@@ -1,5 +1,5 @@
 {
-  "name": "@gig-payout/web",
+  "name": "@syphus/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,9 +12,9 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@gig-payout/anchors": "workspace:*",
-    "@gig-payout/db": "workspace:*",
-    "@gig-payout/stellar": "workspace:*",
+    "@syphus/anchors": "workspace:*",
+    "@syphus/db": "workspace:*",
+    "@syphus/stellar": "workspace:*",
     "bcryptjs": "^3.0.2",
     "drizzle-orm": "^0.39.3",
     "next": "15.3.3",

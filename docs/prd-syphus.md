@@ -1,12 +1,12 @@
 # Product Requirements Document (PRD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 1.0
 **Owner:** Project team
 **Status:** Locked
 **Last reconciled:** 2026-07-06
-**Sources:** [idea-gig-payout.md](idea-gig-payout.md), [brd-gig-payout.md](brd-gig-payout.md), [scrutiny-gig-payout.md](scrutiny-gig-payout.md)
+**Sources:** [idea-syphus.md](idea-syphus.md), [brd-syphus.md](brd-syphus.md), [scrutiny-syphus.md](scrutiny-syphus.md)
 
 ---
 
@@ -101,7 +101,7 @@ flowchart LR
     PayLink[Open SEP-7 link]
     SendUSDC[Send USDC Stellar]
   end
-  subgraph app [Gig Payout]
+  subgraph app [Syphus]
     Dash[Freelancer dashboard]
     OffRamp[Off-ramp flow]
     Export[Income export]

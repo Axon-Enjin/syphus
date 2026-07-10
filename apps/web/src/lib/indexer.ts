@@ -4,8 +4,8 @@ import {
   wallets,
   transactions,
   indexerCursors,
-} from "@gig-payout/db";
-import { fetchPayments } from "@gig-payout/stellar";
+} from "@syphus/db";
+import { fetchPayments } from "@syphus/stellar";
 
 export async function indexAllWallets() {
   const db = getDb();

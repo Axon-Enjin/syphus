@@ -1,10 +1,10 @@
-# AGENTS.md: Gig Payout Build Guide
+# AGENTS.md: Syphus Build Guide
 
-**Project:** Gig Payout · **Slug:** `gig-payout`
-**Canonical BUILD source:** [docs/build-gig-payout.md](docs/build-gig-payout.md)
+**Project:** Syphus · **Slug:** `syphus`
+**Canonical BUILD source:** [docs/build-syphus.md](docs/build-syphus.md)
 **Doc manifest:** [docs/index.md](docs/index.md) · Built on FMD v1.14.0
 
-This file guides AI agents implementing Gig Payout. For FMD doc generation commands, see [FMD operations](#fmd-doc-operations) below.
+This file guides AI agents implementing Syphus. For FMD doc generation commands, see [FMD operations](#fmd-doc-operations) below.
 
 ---
 
@@ -13,12 +13,12 @@ This file guides AI agents implementing Gig Payout. For FMD doc generation comma
 **Read order:**
 
 1. [docs/index.md](docs/index.md)
-2. [docs/prd-gig-payout.md](docs/prd-gig-payout.md) (Must-Haves PRD-F1 through PRD-F4)
-3. [docs/sdd-gig-payout.md](docs/sdd-gig-payout.md)
-4. [docs/rfc-gig-payout-anchor-orchestration.md](docs/rfc-gig-payout-anchor-orchestration.md)
-5. [docs/dsd-gig-payout.md](docs/dsd-gig-payout.md)
-6. [docs/qad-gig-payout.md](docs/qad-gig-payout.md)
-7. [docs/sad-gig-payout.md](docs/sad-gig-payout.md)
+2. [docs/prd-syphus.md](docs/prd-syphus.md) (Must-Haves PRD-F1 through PRD-F4)
+3. [docs/sdd-syphus.md](docs/sdd-syphus.md)
+4. [docs/rfc-syphus-anchor-orchestration.md](docs/rfc-syphus-anchor-orchestration.md)
+5. [docs/dsd-syphus.md](docs/dsd-syphus.md)
+6. [docs/qad-syphus.md](docs/qad-syphus.md)
+7. [docs/sad-syphus.md](docs/sad-syphus.md)
 
 **Traceability:**
 
@@ -29,7 +29,7 @@ This file guides AI agents implementing Gig Payout. For FMD doc generation comma
 | PRD-F3 | §4 anchor | anchor-orchestration | F3-* | anchor-offramp |
 | PRD-F4 | §3 indexer | - | F4-* | horizon-indexer, export-qa |
 
-**Definition of done:** [docs/qad-gig-payout.md](docs/qad-gig-payout.md) §6 + FMD Production Readiness Gate.
+**Definition of done:** [docs/qad-syphus.md](docs/qad-syphus.md) §6 + FMD Production Readiness Gate.
 
 **Product wedge (do not drift):** Crypto-native USDC payers only. Do not build "cheaper than Wise" messaging or fiat-client onboarding.
 
@@ -37,7 +37,7 @@ This file guides AI agents implementing Gig Payout. For FMD doc generation comma
 
 ## 2. Subagents
 
-See [docs/sad-gig-payout.md](docs/sad-gig-payout.md). Build order: wallet-auth → payment-link → horizon-indexer → anchor-offramp → export-qa.
+See [docs/sad-syphus.md](docs/sad-syphus.md). Build order: wallet-auth → payment-link → horizon-indexer → anchor-offramp → export-qa.
 
 ---
 
@@ -109,10 +109,10 @@ This repo uses FMD via pointer. For doc generation/amendment:
 - **Validate:** `python D:/PROJECTS/FMD/scripts/check.py docs/ --scale full --strict`
 - **Cockpit:** `python D:/PROJECTS/FMD/scripts/cockpit.py .`
 - **Templates:** `D:/PROJECTS/FMD/templates/<NAME>_Template.md`
-- **Session log:** Append to [docs/log-gig-payout.md](docs/log-gig-payout.md)
+- **Session log:** Append to [docs/log-syphus.md](docs/log-syphus.md)
 
 Do not duplicate FMD routing rules here; fetch canonical [FMD AGENTS.md](https://raw.githubusercontent.com/delatorrecj/fmd/v1.14.0/AGENTS.md) for doc triggers.
 
 ---
 
-*Materialized from docs/build-gig-payout.md · 2026-07-06*
+*Materialized from docs/build-syphus.md · 2026-07-06*

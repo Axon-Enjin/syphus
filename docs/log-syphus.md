@@ -1,7 +1,7 @@
 # Build Session Log (LOG)
 
-**Project:** Gig Payout
-**Project slug:** gig-payout
+**Project:** Syphus
+**Project slug:** syphus
 **FMD engine:** 1.14.0
 **Platform / model:** Cursor / Composer
 **Scale:** Full
@@ -14,13 +14,14 @@
 | # | Timestamp (UTC) | Trigger / action | Template loaded | Doc written / updated | Gate / verdict | check.py result |
 |---|-----------------|------------------|-----------------|----------------------|----------------|-----------------|
 | 1 | 2026-07-06T03:55Z | FMD init.ps1 pointer install | init.ps1 | AGENTS.md, platform pointers | - | not run |
-| 2 | 2026-07-06T04:00Z | Build the FMD: IDEA | IDEA_Template.md | docs/idea-gig-payout.md | - | not run |
-| 3 | 2026-07-06T04:05Z | Build the FMD: Scrutiny Gate | SCRUTINY_Template.md | docs/scrutiny-gig-payout.md | PROCEED WITH FIXES | not run |
+| 2 | 2026-07-06T04:00Z | Build the FMD: IDEA | IDEA_Template.md | docs/idea-syphus.md | - | not run |
+| 3 | 2026-07-06T04:05Z | Build the FMD: Scrutiny Gate | SCRUTINY_Template.md | docs/scrutiny-syphus.md | PROCEED WITH FIXES | not run |
 | 4 | 2026-07-06T04:15Z | Full suite generation | Multiple | index, BRD, PRD, DSD, SDD, RFC, QAD, SAD, BUILD, CLR, GTM, OPS | - | 0 failures |
 | 5 | 2026-07-06T04:25Z | Materialize README + AGENTS | BUILD, README | README.md, AGENTS.md | - | not run |
 | 6 | 2026-07-06T04:35Z | check.py scale full strict | - | spec.md voice fix, index row | - | 0 failures |
 | 7 | 2026-07-06T04:10Z | Lock specs: hybrid revenue, Auth.js v5 | CR implicit | BRD, PRD, SDD, DSD, RFC, index | - | 0 failures |
 | 8 | 2026-07-06T04:20Z | v1 monorepo scaffold + PRD-F1..F4 | BUILD | apps/web, packages/* | - | build ok |
+| 9 | 2026-07-10T00:53Z | Project rebrand to Syphus | - | docs/*-syphus.md, AGENTS.md, packages/@syphus/* | - | 4 pre-existing trace failures |
 
 ---
 
@@ -35,7 +36,7 @@
 ## 3. Field report distillation (for FMD maintainers)
 
 **Engine version:** 1.14.0
-**Project:** Gig Payout (gig-payout)
+**Project:** Syphus (syphus)
 **Scale:** Full
 **Platform / model:** Cursor / Composer
 **Outcome:** Full doc suite generated; margin scrutiny reframed wedge to crypto-native clients

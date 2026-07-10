@@ -2,8 +2,8 @@
 
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { getDb, users, wallets } from "@gig-payout/db";
-import { generateKeypair } from "@gig-payout/stellar";
+import { getDb, users, wallets } from "@syphus/db";
+import { generateKeypair } from "@syphus/stellar";
 import { z } from "zod";
 import { encryptSecret } from "@/lib/crypto";
 

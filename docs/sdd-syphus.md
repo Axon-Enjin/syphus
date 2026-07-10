@@ -1,12 +1,12 @@
 # System Design Document (SDD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 1.0
 **Owner:** Tech lead
 **Status:** Locked
 **Last reconciled:** 2026-07-06
-**Sources:** [prd-gig-payout.md](prd-gig-payout.md)
+**Sources:** [prd-syphus.md](prd-syphus.md)
 
 ---
 
@@ -90,7 +90,7 @@ flowchart TB
 | Coins.ph SEP-24 | Interactive | PRD-F3 | Redirect + callback URL |
 | BCRemit | SEP-24 | PRD-F3 | Fallback when primary unhealthy |
 
-See [rfc-gig-payout-anchor-orchestration.md](rfc-gig-payout-anchor-orchestration.md) for anchor trade-offs.
+See [rfc-syphus-anchor-orchestration.md](rfc-syphus-anchor-orchestration.md) for anchor trade-offs.
 
 ---
 

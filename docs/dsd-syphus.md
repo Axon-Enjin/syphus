@@ -1,12 +1,12 @@
 # Design System Document (DSD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 1.0
 **Owner:** Design lead
 **Status:** Locked
 **Last reconciled:** 2026-07-06
-**Sources:** [idea-gig-payout.md](idea-gig-payout.md), [prd-gig-payout.md](prd-gig-payout.md)
+**Sources:** [idea-syphus.md](idea-syphus.md), [prd-syphus.md](prd-syphus.md)
 
 ---
 
@@ -41,7 +41,7 @@ Run before implementation: `npx @pbakaus/impeccable init` in web app root. Docum
 
 ## 1. Design Philosophy & Vision
 
-Gig Payout should feel like Wise met a modern payroll tool, not a DeFi dashboard. Users are Filipino professionals who may not self-identify as "crypto users"; payers are ops leads who want reconciliation, not token charts.
+Syphus should feel like Wise met a modern payroll tool, not a DeFi dashboard. Users are Filipino professionals who may not self-identify as "crypto users"; payers are ops leads who want reconciliation, not token charts.
 
 ---
 
@@ -71,7 +71,7 @@ No Inter as primary. No indigo primary buttons.
 
 ### 2.3 Logo & wordmark
 
-Wordmark: **Gig Payout** in DM Sans Semibold. Icon: abstract link/chain node (single stroke, not coin logo).
+Wordmark: **Syphus** in DM Sans Semibold. Icon: abstract link/chain node (single stroke, not coin logo).
 
 ### 2.4 Voice (UI copy)
 

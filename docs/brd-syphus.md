@@ -1,18 +1,18 @@
 # Business Requirements Document (BRD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 1.0
 **Owner:** Project team
 **Status:** Locked
 **Last reconciled:** 2026-07-06
-**Sources:** [idea-gig-payout.md](idea-gig-payout.md), [scrutiny-gig-payout.md](scrutiny-gig-payout.md)
+**Sources:** [idea-syphus.md](idea-syphus.md), [scrutiny-syphus.md](scrutiny-syphus.md)
 
 ---
 
 ## 1. Executive Summary
 
-Gig Payout is a Stellar-based payment rail for crypto-native companies paying Filipino contractors in USDC, with same-day PHP off-ramp and automatic income history. The business targets web3 startups, DAOs, and crypto agencies where the payer already holds USDC, not fiat-first freelancers where Wise (~0.7%) and Higlobe (0.6%) already win on cost.
+Syphus is a Stellar-based payment rail for crypto-native companies paying Filipino contractors in USDC, with same-day PHP off-ramp and automatic income history. The business targets web3 startups, DAOs, and crypto agencies where the payer already holds USDC, not fiat-first freelancers where Wise (~0.7%) and Higlobe (0.6%) already win on cost.
 
 **Investment thesis:** Reduce ops friction (invoice links, reconciliation, batch payout, income export) for B2B payers; monetize via agency subscription and batch fees, not FX spread alone.
 

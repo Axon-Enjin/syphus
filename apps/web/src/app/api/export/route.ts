@@ -6,7 +6,7 @@ import {
   transactionsToPdfHtml,
 } from "@/lib/export";
 import { eq } from "drizzle-orm";
-import { getDb, users } from "@gig-payout/db";
+import { getDb, users } from "@syphus/db";
 
 export async function GET(request: Request) {
   const session = await auth();

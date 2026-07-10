@@ -1,6 +1,6 @@
 # Idea Brief (IDEA)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** Project team

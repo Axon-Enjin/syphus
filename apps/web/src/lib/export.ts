@@ -1,4 +1,4 @@
-import type { Transaction } from "@gig-payout/db";
+import type { Transaction } from "@syphus/db";
 
 export function transactionsToCsv(rows: Transaction[]): string {
   const header = "date,amount_usdc,sender,transaction_hash,memo";
@@ -30,7 +30,7 @@ export function transactionsToPdfHtml(
 <html><head><meta charset="utf-8"><title>Income Report</title>
 <style>body{font-family:IBM Plex Sans,sans-serif;padding:40px;color:#1A1A18}table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #ddd;padding:8px;text-align:left}h1{color:#0D6E4F}</style>
 </head><body>
-<h1>Gig Payout Income Report</h1>
+<h1>Syphus Income Report</h1>
 <p>Recipient: ${userName}</p>
 <p>Total USDC: ${total.toFixed(2)}</p>
 <p>Generated: ${new Date().toISOString()}</p>

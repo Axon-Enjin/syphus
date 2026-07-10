@@ -1,12 +1,12 @@
 # Build Guide (BUILD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** Tech lead
 **Status:** Draft
 **Last reconciled:** 2026-07-06
-**Sources:** [sdd-gig-payout.md](sdd-gig-payout.md), [dsd-gig-payout.md](dsd-gig-payout.md), [sad-gig-payout.md](sad-gig-payout.md)
+**Sources:** [sdd-syphus.md](sdd-syphus.md), [dsd-syphus.md](dsd-syphus.md), [sad-syphus.md](sad-syphus.md)
 
 ---
 
@@ -15,12 +15,12 @@
 **Read order:**
 
 1. [docs/index.md](docs/index.md) (manifest)
-2. [docs/prd-gig-payout.md](docs/prd-gig-payout.md) (Must-Haves PRD-F1 through PRD-F4)
-3. [docs/sdd-gig-payout.md](docs/sdd-gig-payout.md) (architecture)
-4. [docs/rfc-gig-payout-anchor-orchestration.md](docs/rfc-gig-payout-anchor-orchestration.md) (PRD-F3)
-5. [docs/dsd-gig-payout.md](docs/dsd-gig-payout.md) (UI tokens)
-6. [docs/qad-gig-payout.md](docs/qad-gig-payout.md) (test matrix)
-7. [docs/sad-gig-payout.md](docs/sad-gig-payout.md) (agent roster)
+2. [docs/prd-syphus.md](docs/prd-syphus.md) (Must-Haves PRD-F1 through PRD-F4)
+3. [docs/sdd-syphus.md](docs/sdd-syphus.md) (architecture)
+4. [docs/rfc-syphus-anchor-orchestration.md](docs/rfc-syphus-anchor-orchestration.md) (PRD-F3)
+5. [docs/dsd-syphus.md](docs/dsd-syphus.md) (UI tokens)
+6. [docs/qad-syphus.md](docs/qad-syphus.md) (test matrix)
+7. [docs/sad-syphus.md](docs/sad-syphus.md) (agent roster)
 
 **Traceability map:**
 
@@ -37,7 +37,7 @@
 
 ## 2. Subagents
 
-See [sad-gig-payout.md](sad-gig-payout.md). Main agent orchestrates; do not spawn more than one agent per module concurrently on conflicting files.
+See [sad-syphus.md](sad-syphus.md). Main agent orchestrates; do not spawn more than one agent per module concurrently on conflicting files.
 
 ---
 

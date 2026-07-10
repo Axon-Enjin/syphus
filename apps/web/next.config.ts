@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@gig-payout/db", "@gig-payout/stellar", "@gig-payout/anchors"],
+  transpilePackages: ["@syphus/db", "@syphus/stellar", "@syphus/anchors"],
   experimental: {
     serverActions: {
       bodySizeLimit: "2mb",

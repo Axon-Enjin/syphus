@@ -16,7 +16,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gig Payout",
+  title: "Syphus",
   description: "USDC payment rail for crypto-native teams paying PH contractors",
 };
 
