@@ -16,6 +16,7 @@ export default async function OnboardPage() {
       trustlineReady={wallet?.trustlineReady ?? false}
       anchorKycComplete={wallet?.anchorKycComplete ?? false}
       isExternal={!wallet?.encryptedSecret}
+      isMockAnchor={process.env.ANCHOR_PROVIDER === "mock"}
       horizonUrl={getHorizonUrl()}
       networkPassphrase={getNetworkPassphrase()}
     />

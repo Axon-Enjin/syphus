@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, StepIndicator, StatusBadge, PageHeader } from "@/components/ui";
 import { AddressDisplay } from "@/components/ui-interactive";
 import { KycStatusCard } from "@/components/kyc-status-card";
+import { MockKycButton } from "@/app/dashboard/withdraw/mock-kyc-button";
 import { TrustlineCheck } from "./trustline-check";
 
 interface WalletSetupProps {
@@ -12,6 +13,7 @@ interface WalletSetupProps {
   trustlineReady: boolean;
   anchorKycComplete: boolean;
   isExternal: boolean;
+  isMockAnchor: boolean;
   horizonUrl: string;
   networkPassphrase: string;
 }
@@ -21,6 +23,7 @@ export function WalletSetup({
   trustlineReady: initialTrustlineReady,
   anchorKycComplete,
   isExternal,
+  isMockAnchor,
   horizonUrl,
   networkPassphrase,
 }: WalletSetupProps) {
@@ -28,6 +31,8 @@ export function WalletSetup({
 
   const hasAddress = !!publicKey;
 
+  // Three core setup steps. Identity verification is deferred to the first
+  // withdrawal, so it is shown as a separate "later" section, not a step here.
   const steps = [
     { label: "Account created", status: "done" as const },
     {
@@ -42,10 +47,6 @@ export function WalletSetup({
           ? ("active" as const)
           : ("pending" as const),
     },
-    {
-      label: "Identity verification",
-      status: anchorKycComplete ? ("done" as const) : ("pending" as const),
-    },
   ];
 
   function handleTrustlineSuccess() {
@@ -58,6 +59,28 @@ export function WalletSetup({
         title="Wallet setup"
         description="A few steps so clients can pay you in USDC."
       />
+
+      {trustlineReady && (
+        <Card title="You're all set">
+          <div className="space-y-4">
+            <StatusBadge variant="success">
+              Your wallet is ready to receive USDC
+            </StatusBadge>
+            <p className="text-sm text-[var(--color-muted)]">
+              Head to your dashboard or share a payment link to start getting
+              paid.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/dashboard" className="btn-primary focus-ring">
+                Continue to dashboard
+              </Link>
+              <Link href="/dashboard/pay" className="btn-secondary focus-ring">
+                Create payment link
+              </Link>
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Card title="Your setup progress">
         <StepIndicator steps={steps} orientation="vertical" />
@@ -80,23 +103,9 @@ export function WalletSetup({
 
       <Card title="Enable USDC">
         {trustlineReady ? (
-          <div className="space-y-4">
-            <StatusBadge variant="success">
-              You can receive USDC payments
-            </StatusBadge>
-            <p className="text-sm text-[var(--color-muted)]">
-              Your wallet is ready. Create a payment link or go to your
-              dashboard to get started.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/dashboard" className="btn-primary focus-ring">
-                Go to dashboard
-              </Link>
-              <Link href="/dashboard/pay" className="btn-secondary focus-ring">
-                Create payment link
-              </Link>
-            </div>
-          </div>
+          <StatusBadge variant="success">
+            You can receive USDC payments
+          </StatusBadge>
         ) : (
           <div className="space-y-2">
             <p className="text-sm text-[var(--color-muted)]">
@@ -113,8 +122,11 @@ export function WalletSetup({
         )}
       </Card>
 
-      <Card title="Identity verification">
-        <KycStatusCard complete={anchorKycComplete} />
+      <Card title="Identity verification (later)">
+        <div className="space-y-3">
+          <KycStatusCard complete={anchorKycComplete} />
+          {isMockAnchor && !anchorKycComplete && <MockKycButton />}
+        </div>
       </Card>
     </div>
   );

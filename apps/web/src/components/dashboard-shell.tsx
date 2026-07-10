@@ -91,12 +91,21 @@ function SidebarLink({
   );
 }
 
-export function DashboardShell({ children }: { children: React.ReactNode }) {
+export function DashboardShell({
+  children,
+  onboardingComplete,
+  currentStep,
+  totalSteps,
+}: {
+  children: React.ReactNode;
+  onboardingComplete: boolean;
+  currentStep: number;
+  totalSteps: number;
+}) {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const trustlineReady = session?.user?.trustlineReady ?? false;
   const email = session?.user?.email;
-  const isOnboarding = session && !trustlineReady;
+  const isOnboarding = !onboardingComplete;
 
   if (isOnboarding) {
     return (
@@ -108,7 +117,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </div>
           <SignOutButton />
         </header>
-        <OnboardingBanner currentStep={2} totalSteps={3} />
+        <OnboardingBanner currentStep={currentStep} totalSteps={totalSteps} />
         <div className="container-app py-8">{children}</div>
       </div>
     );
