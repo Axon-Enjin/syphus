@@ -124,7 +124,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               className="font-display focus-ring flex items-center gap-2 font-semibold tracking-tight text-[var(--color-accent)]"
             >
               <BrandMark className="h-5 w-5" />
-              Gig Payout
+              Syphus
             </Link>
           </div>
 

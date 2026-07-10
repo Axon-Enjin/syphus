@@ -2,8 +2,8 @@ import {
   getActiveProviderId,
   getOffRampStatus,
   isOffRampPaused,
-} from "@gig-payout/anchors";
-import { sql } from "@gig-payout/db";
+} from "@syphus/anchors";
+import { sql } from "@syphus/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -17,7 +17,7 @@ export async function GET() {
   let dbStatus = "skipped";
   if (process.env.DATABASE_URL) {
     try {
-      const { getDb } = await import("@gig-payout/db");
+      const { getDb } = await import("@syphus/db");
       const db = getDb();
       await db.execute(sql`SELECT 1`);
       dbStatus = "ok";

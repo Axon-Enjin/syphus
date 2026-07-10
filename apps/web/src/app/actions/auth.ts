@@ -1,8 +1,8 @@
 "use server";
 
 import bcrypt from "bcryptjs";
-import { getDb, users, wallets, withDbRetry, eq } from "@gig-payout/db";
-import { generateKeypair, checkUsdcTrustline, addUsdcTrustline, isValidPublicKey, fundTestnetAccount, isTestnet } from "@gig-payout/stellar";
+import { getDb, users, wallets, withDbRetry, eq } from "@syphus/db";
+import { generateKeypair, checkUsdcTrustline, addUsdcTrustline, isValidPublicKey, fundTestnetAccount, isTestnet } from "@syphus/stellar";
 import { z } from "zod";
 import { encryptSecret } from "@/lib/crypto";
 import { auth } from "@/lib/auth";
@@ -226,7 +226,7 @@ export async function buildTrustlineXdr(): Promise<BuildTrustlineXdrResult> {
   }
 
   // Build the transaction XDR (unsigned) for Freighter to sign
-  const { buildUnsignedTrustlineTx } = await import("@gig-payout/stellar");
+  const { buildUnsignedTrustlineTx } = await import("@syphus/stellar");
   const result = await buildUnsignedTrustlineTx(wallet.publicKey);
 
   if (!result.success) {

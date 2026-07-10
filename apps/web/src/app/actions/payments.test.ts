@@ -4,8 +4,8 @@ const { mockLimit } = vi.hoisted(() => ({
   mockLimit: vi.fn(),
 }));
 
-vi.mock("@gig-payout/db", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@gig-payout/db")>();
+vi.mock("@syphus/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@syphus/db")>();
   const mockDb = {
     select: vi.fn().mockReturnThis(),
     from: vi.fn().mockReturnThis(),
@@ -22,7 +22,7 @@ vi.mock("@gig-payout/db", async (importOriginal) => {
   };
 });
 
-vi.mock("@gig-payout/stellar", () => ({
+vi.mock("@syphus/stellar", () => ({
   buildSep7Uri: vi.fn(() => "web+stellar:pay?destination=GTEST"),
 }));
 

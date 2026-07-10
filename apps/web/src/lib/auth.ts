@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { eq } from "@gig-payout/db";
-import { getDb, users, wallets } from "@gig-payout/db";
+import { eq } from "@syphus/db";
+import { getDb, users, wallets } from "@syphus/db";
 import { z } from "zod";
 import { authConfig } from "./auth.config";
 import { getTrustlineReadyForUser } from "./auth-helpers";

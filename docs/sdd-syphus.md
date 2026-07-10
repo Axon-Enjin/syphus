@@ -1,12 +1,12 @@
 # System Design Document (SDD)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 1.0
 **Owner:** Tech lead
 **Status:** Locked
 **Last reconciled:** 2026-07-06
-**Sources:** [prd-gig-payout.md](prd-gig-payout.md)
+**Sources:** [prd-syphus.md](prd-syphus.md)
 
 ---
 
@@ -99,8 +99,8 @@ flowchart TB
 | BCRemit | SEP-24 | PRD-F3 | Fallback when primary unhealthy |
 | Soroban RPC | JSON-RPC | PRD-F9 | `register_link`, `mark_link_paid`, `get_link` |
 
-See [rfc-gig-payout-anchor-orchestration.md](rfc-gig-payout-anchor-orchestration.md) for anchor trade-offs.
-See [rfc-gig-payout-soroban-registry.md](rfc-gig-payout-soroban-registry.md) for registry design.
+See [rfc-syphus-anchor-orchestration.md](rfc-syphus-anchor-orchestration.md) for anchor trade-offs.
+See [rfc-syphus-soroban-registry.md](rfc-syphus-soroban-registry.md) for registry design.
 
 ---
 

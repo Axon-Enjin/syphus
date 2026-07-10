@@ -5,7 +5,7 @@ const updateWhere = vi.fn();
 const markLinkPaid = vi.fn();
 const isSorobanEnabled = vi.fn();
 
-vi.mock("@gig-payout/db", () => ({
+vi.mock("@syphus/db", () => ({
   eq: (a: unknown, b: unknown) => ({ a, b }),
   or: (...args: unknown[]) => ({ or: args }),
   getDb: () => ({
@@ -30,7 +30,7 @@ vi.mock("@gig-payout/db", () => ({
   },
 }));
 
-vi.mock("@gig-payout/stellar", () => ({
+vi.mock("@syphus/stellar", () => ({
   isSorobanEnabled: () => isSorobanEnabled(),
   markLinkPaid: (...args: unknown[]) => markLinkPaid(...args),
 }));

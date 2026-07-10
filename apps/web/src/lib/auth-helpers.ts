@@ -1,5 +1,5 @@
-import { eq } from "@gig-payout/db";
-import { getDb, wallets, users } from "@gig-payout/db";
+import { eq } from "@syphus/db";
+import { getDb, wallets, users } from "@syphus/db";
 
 export { SESSION_STRATEGY } from "./auth.config";
 export async function getTrustlineReadyForUser(

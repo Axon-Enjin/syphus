@@ -1,8 +1,8 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
 // Mock dependencies before importing the module under test
-vi.mock("@gig-payout/db", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@gig-payout/db")>();
+vi.mock("@syphus/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@syphus/db")>();
   const mockDb = {
     select: vi.fn().mockReturnThis(),
     from: vi.fn().mockReturnThis(),
@@ -29,7 +29,7 @@ vi.mock("@gig-payout/db", async (importOriginal) => {
   };
 });
 
-vi.mock("@gig-payout/stellar", () => ({
+vi.mock("@syphus/stellar", () => ({
   generateKeypair: () => ({
     publicKey: "GABCDEFGHIJKLMNOPQRSTUVWXYZ234567890ABCDEFGHIJKLMNOPQ",
     secretKey: "SABCDEFGHIJKLMNOPQRSTUVWXYZ234567890ABCDEFGHIJKLMNOPQ",
@@ -92,7 +92,7 @@ describe("registerUser", () => {
   });
 
   it("returns field error when email already registered", async () => {
-    const { __mockDb } = await import("@gig-payout/db") as unknown as {
+    const { __mockDb } = await import("@syphus/db") as unknown as {
       __mockDb: { limit: ReturnType<typeof vi.fn> };
     };
     __mockDb.limit.mockResolvedValueOnce([{ id: "existing-user" }]);
@@ -107,7 +107,7 @@ describe("registerUser", () => {
   });
 
   it("returns ok: true on successful registration", async () => {
-    const { __mockDb } = await import("@gig-payout/db") as unknown as {
+    const { __mockDb } = await import("@syphus/db") as unknown as {
       __mockDb: {
         limit: ReturnType<typeof vi.fn>;
         returning: ReturnType<typeof vi.fn>;

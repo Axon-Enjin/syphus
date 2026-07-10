@@ -1,6 +1,6 @@
-# Documentation Index: Gig Payout
+# Documentation Index: Syphus
 
-**Project slug:** `gig-payout`
+**Project slug:** `syphus`
 **Maintained by:** Project team
 **Last updated:** 2026-07-10
 **Built on FMD v1.14.0**
@@ -11,19 +11,19 @@
 
 | Document | File | Version | Status | Last Updated | Last Reconciled |
 |----------|------|---------|--------|--------------|-----------------|
-| IDEA · Idea Brief | [idea-gig-payout.md](idea-gig-payout.md) | 0.1 | Draft | 2026-07-06 | N/A |
-| SCRUTINY · Scrutiny Gate | [scrutiny-gig-payout.md](scrutiny-gig-payout.md) | 0.1 | Draft | 2026-07-06 | N/A |
-| BRD · Business Requirements | [brd-gig-payout.md](brd-gig-payout.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
-| PRD · Product Requirements | [prd-gig-payout.md](prd-gig-payout.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
-| DSD · Design System | [dsd-gig-payout.md](dsd-gig-payout.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
-| SDD · System Design | [sdd-gig-payout.md](sdd-gig-payout.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
-| QAD · QA & Test Plan | [qad-gig-payout.md](qad-gig-payout.md) | 0.1 | Draft | 2026-07-06 | N/A |
-| SAD · Subagents | [sad-gig-payout.md](sad-gig-payout.md) | 0.1 | Draft | 2026-07-06 | N/A |
-| BUILD · Build Guide | [build-gig-payout.md](build-gig-payout.md) | 0.1 | Draft | 2026-07-06 | 2026-07-06 |
-| CLR · Compliance & Legal | [clr-gig-payout.md](clr-gig-payout.md) | 0.1 | Draft | 2026-07-06 | N/A |
-| GTM · Go-To-Market | [gtm-gig-payout.md](gtm-gig-payout.md) | 0.1 | Draft | 2026-07-06 | N/A |
-| OPS · Ops & Observability | [ops-gig-payout.md](ops-gig-payout.md) | 0.1 | Draft | 2026-07-06 | N/A |
-| LOG · Build Session Log | [log-gig-payout.md](log-gig-payout.md) | 0.1 | Open | 2026-07-06 | N/A |
+| IDEA · Idea Brief | [idea-syphus.md](idea-syphus.md) | 0.1 | Draft | 2026-07-06 | N/A |
+| SCRUTINY · Scrutiny Gate | [scrutiny-syphus.md](scrutiny-syphus.md) | 0.1 | Draft | 2026-07-06 | N/A |
+| BRD · Business Requirements | [brd-syphus.md](brd-syphus.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
+| PRD · Product Requirements | [prd-syphus.md](prd-syphus.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
+| DSD · Design System | [dsd-syphus.md](dsd-syphus.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
+| SDD · System Design | [sdd-syphus.md](sdd-syphus.md) | 1.0 | Locked | 2026-07-06 | 2026-07-06 |
+| QAD · QA & Test Plan | [qad-syphus.md](qad-syphus.md) | 0.1 | Draft | 2026-07-06 | N/A |
+| SAD · Subagents | [sad-syphus.md](sad-syphus.md) | 0.1 | Draft | 2026-07-06 | N/A |
+| BUILD · Build Guide | [build-syphus.md](build-syphus.md) | 0.1 | Draft | 2026-07-06 | 2026-07-06 |
+| CLR · Compliance & Legal | [clr-syphus.md](clr-syphus.md) | 0.1 | Draft | 2026-07-06 | N/A |
+| GTM · Go-To-Market | [gtm-syphus.md](gtm-syphus.md) | 0.1 | Draft | 2026-07-06 | N/A |
+| OPS · Ops & Observability | [ops-syphus.md](ops-syphus.md) | 0.1 | Draft | 2026-07-06 | N/A |
+| LOG · Build Session Log | [log-syphus.md](log-syphus.md) | 0.1 | Open | 2026-07-06 | N/A |
 | Legacy Spec (pre-FMD) | [spec.md](spec.md) | 1.0 | Superseded | 2026-07-06 | N/A |
 | VALIDATION | - | - | N/A (not written) | - | - |
 | AIA | - | - | N/A (no AI component) | - | - |
@@ -36,8 +36,8 @@
 
 | RFC ID | File | Feature | Status | Last Updated |
 |--------|------|---------|--------|--------------|
-| gig-payout-rfc-001 | [rfc-gig-payout-anchor-orchestration.md](rfc-gig-payout-anchor-orchestration.md) | PRD-F3 anchor off-ramp | Locked | 2026-07-06 |
-| gig-payout-rfc-002 | [rfc-gig-payout-soroban-registry.md](rfc-gig-payout-soroban-registry.md) | PRD-F9 on-chain registry | Locked | 2026-07-07 |
+| syphus-rfc-001 | [rfc-syphus-anchor-orchestration.md](rfc-syphus-anchor-orchestration.md) | PRD-F3 anchor off-ramp | Locked | 2026-07-06 |
+| syphus-rfc-002 | [rfc-syphus-soroban-registry.md](rfc-syphus-soroban-registry.md) | PRD-F9 on-chain registry | Locked | 2026-07-07 |
 
 ---
 

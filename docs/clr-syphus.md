@@ -1,12 +1,12 @@
 # Compliance & Legal Readiness (CLR)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** Compliance lead
 **Status:** Draft
 **Last reconciled:** N/A (not yet reconciled)
-**Sources:** [prd-gig-payout.md](prd-gig-payout.md), [sdd-gig-payout.md](sdd-gig-payout.md)
+**Sources:** [prd-syphus.md](prd-syphus.md), [sdd-syphus.md](sdd-syphus.md)
 
 > **Legal disclaimer:** This document is a compliance register, not legal advice. Escalation flags in §3 require qualified counsel before launch.
 
@@ -75,7 +75,7 @@ Required sections (draft):
 
 ## 5. IP Infringement & Protection Readiness
 
-- Trademark search: "Gig Payout" (TBD)
+- Trademark search: "Syphus" (TBD)
 - Open-source licenses: stellar-sdk MIT, document in repo
 - No Circle/USDC trademark misuse in marketing
 

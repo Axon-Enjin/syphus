@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getTransactionsInRange } from "@/lib/indexer";
 import { transactionsToCsv, transactionsToPdf } from "@/lib/export";
-import { eq } from "@gig-payout/db";
-import { getDb, users } from "@gig-payout/db";
+import { eq } from "@syphus/db";
+import { getDb, users } from "@syphus/db";
 
 export async function GET(request: Request) {
   const session = await auth();

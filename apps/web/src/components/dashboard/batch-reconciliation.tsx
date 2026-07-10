@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { markBatchItemCompleted } from "@/app/actions/batch";
-import type { Batch, BatchItem } from "@gig-payout/db";
-import type { OnChainBatchRecord } from "@gig-payout/stellar";
+import type { Batch, BatchItem } from "@syphus/db";
+import type { OnChainBatchRecord } from "@syphus/stellar";
 import { Card, StatusBadge } from "@/components/ui";
 import { CopyButton } from "@/components/ui-interactive";
 

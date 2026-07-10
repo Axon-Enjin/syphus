@@ -37,7 +37,7 @@ export default function HomePage() {
         {/* Hero: asymmetric split */}
         <section className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="space-y-6">
-            <p className="text-eyebrow">Gig Payout</p>
+            <p className="text-eyebrow">Syphus</p>
             <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-[var(--color-text)] md:text-5xl">
               USDC payroll for your PH team. One link. PHP today.
             </h1>

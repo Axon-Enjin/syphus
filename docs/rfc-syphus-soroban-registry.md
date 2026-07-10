@@ -1,20 +1,20 @@
 # RFC: Soroban Payment Registry
 
-**Project:** Gig Payout
-**RFC ID:** gig-payout-rfc-002
+**Project:** Syphus
+**RFC ID:** syphus-rfc-002
 **Date:** 2026-07-07
 **Version:** 1.0
 **Owner:** Tech lead
 **Status:** Locked
 **Last reconciled:** 2026-07-07
 **Feature:** PRD-F9 on-chain payment registry
-**Sources:** [sdd-gig-payout.md](sdd-gig-payout.md), [prd-gig-payout.md](prd-gig-payout.md)
+**Sources:** [sdd-syphus.md](sdd-syphus.md), [prd-syphus.md](prd-syphus.md)
 
 ---
 
 ## 1. Context & Objective
 
-Hackathon submissions require a deployed Soroban smart contract with meaningful integration. Gig Payout's product wedge is native Stellar USDC payments via SEP-7; replacing that flow with contract-mediated token transfers would break checkout UX and anchor compatibility.
+Hackathon submissions require a deployed Soroban smart contract with meaningful integration. Syphus's product wedge is native Stellar USDC payments via SEP-7; replacing that flow with contract-mediated token transfers would break checkout UX and anchor compatibility.
 
 **Objective:** Add a `PaymentRegistry` Soroban contract that attests payment links and agency batches on-chain and records settlement when the Horizon indexer confirms inbound USDC. USDC continues to move via native payments; the contract is an immutable audit layer.
 

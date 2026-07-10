@@ -22,7 +22,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gig Payout — USDC payments for PH contractors",
+  title: "Syphus — USDC payments for PH contractors",
   description:
     "Invoice links, bank withdrawals, and income history for freelancers paid in USDC on Stellar.",
 };

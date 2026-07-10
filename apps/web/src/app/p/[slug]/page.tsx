@@ -1,7 +1,7 @@
 import { getPaymentLinkBySlug } from "@/app/actions/payments";
 import { PublicCheckout } from "@/components/public-checkout";
 import { PublicLayout } from "@/components/public-layout";
-import { getLinkOnChain, isSorobanEnabled } from "@gig-payout/stellar";
+import { getLinkOnChain, isSorobanEnabled } from "@syphus/stellar";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -13,15 +13,15 @@ export async function generateMetadata({
   const { slug } = await params;
   const link = await getPaymentLinkBySlug(slug);
   if (!link) {
-    return { title: "Payment link not found · Gig Payout" };
+    return { title: "Payment link not found · Syphus" };
   }
 
   const name = link.userName ?? link.label ?? "Contractor";
   const amount = link.amountUsdc ? `${link.amountUsdc} USDC` : "USDC";
 
   return {
-    title: `Pay ${name} · Gig Payout`,
-    description: `Send ${amount} on Stellar to ${name} via Gig Payout.`,
+    title: `Pay ${name} · Syphus`,
+    description: `Send ${amount} on Stellar to ${name} via Syphus.`,
   };
 }
 

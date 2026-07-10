@@ -20,8 +20,8 @@ vi.mock("@/lib/indexer", () => ({
   ]),
 }));
 
-vi.mock("@gig-payout/db", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@gig-payout/db")>();
+vi.mock("@syphus/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@syphus/db")>();
   return {
     ...actual,
     getDb: () => ({

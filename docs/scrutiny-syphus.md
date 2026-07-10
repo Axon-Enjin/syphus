@@ -1,12 +1,12 @@
 # IDEA Scrutiny Gate (SCRUTINY)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** Project team
 **Status:** Draft
 **Last reconciled:** N/A (not yet reconciled)
-**IDEA:** [idea-gig-payout.md](idea-gig-payout.md)
+**IDEA:** [idea-syphus.md](idea-syphus.md)
 
 ---
 
@@ -69,7 +69,7 @@
 
 ## 4. Assumption Stress-Test
 
-**Load-bearing assumption:** Crypto-native clients (web3 teams, DAOs, crypto agencies) will route contractor payments through Gig Payout instead of manual multisig sends because invoice links, batch payout, and income export reduce ops friction enough to pay a SaaS or batch fee.
+**Load-bearing assumption:** Crypto-native clients (web3 teams, DAOs, crypto agencies) will route contractor payments through Syphus instead of manual multisig sends because invoice links, batch payout, and income export reduce ops friction enough to pay a SaaS or batch fee.
 
 **Strongest argument against it:** Treasurers already send USDC manually for free; adding a vendor means KYC, another dashboard, and anchor spread with no fee savings vs holding USDC. Higlobe serves fiat clients better; crypto clients may prefer Request Finance + Safe directly.
 

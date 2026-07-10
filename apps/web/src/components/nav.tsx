@@ -49,7 +49,7 @@ export function Nav() {
             className="font-display focus-ring mr-2 hidden items-center gap-1.5 font-semibold tracking-tight text-[var(--color-accent)] sm:flex"
           >
             <BrandMark className="h-4 w-4" />
-            Gig Payout
+            Syphus
           </Link>
           {allNavLinks.map((link) => {
             const active = pathname === link.href;

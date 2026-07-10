@@ -1,9 +1,9 @@
-# Gig Payout
+# Syphus
 
 [![Status: v1 scaffold](https://img.shields.io/badge/Status-v1_scaffold-green)](docs/index.md)
-[![Stack: Next.js](https://img.shields.io/badge/Stack-Next.js-black)](docs/sdd-gig-payout.md)
+[![Stack: Next.js](https://img.shields.io/badge/Stack-Next.js-black)](docs/sdd-syphus.md)
 [![Docs: FMD](https://img.shields.io/badge/Docs-FMD_v1.14.0-333)](docs/index.md)
-[![Stellar](https://img.shields.io/badge/Rail-Stellar_USDC-7D00FF)](docs/sdd-gig-payout.md)
+[![Stellar](https://img.shields.io/badge/Rail-Stellar_USDC-7D00FF)](docs/sdd-syphus.md)
 
 USDC payment rail for crypto-native companies paying Filipino contractors: SEP-7 invoice links, same-day PHP off-ramp, automatic income history. Native USDC payments are attested on-chain via a Soroban `PaymentRegistry` contract (PRD-F9).
 
@@ -41,7 +41,7 @@ Run the dev server and indexer poller in parallel:
 
 ```bash
 pnpm dev                 # terminal 1
-pnpm --filter @gig-payout/web dev:indexer   # terminal 2
+pnpm --filter @syphus/web dev:indexer   # terminal 2
 ```
 
 Manual smoke: register → enable USDC trustline → create payment link → send testnet USDC from Freighter/Coinbase → payment row appears on dashboard within ~60s.
@@ -74,8 +74,8 @@ Production: [`apps/web/vercel.json`](apps/web/vercel.json) runs `/api/cron/index
 | Doc | Purpose |
 |-----|---------|
 | [Index](docs/index.md) | Full manifest |
-| [PRD](docs/prd-gig-payout.md) | Locked features PRD-F1 through PRD-F9 |
-| [BUILD](docs/build-gig-payout.md) | Stack pins + golden paths |
+| [PRD](docs/prd-syphus.md) | Locked features PRD-F1 through PRD-F9 |
+| [BUILD](docs/build-syphus.md) | Stack pins + golden paths |
 | [GTM pilot script](docs/gtm-pilot-script.md) | Concierge onboarding |
 | [CLR launch checklist](docs/clr-launch-checklist.md) | Pre-GA counsel gate |
 

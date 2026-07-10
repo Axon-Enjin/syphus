@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getOffRampStatus, runHealthChecks } from "@gig-payout/anchors";
+import { getOffRampStatus, runHealthChecks } from "@syphus/anchors";
 
 export async function GET(request: Request) {
   const secret = request.headers.get("authorization")?.replace("Bearer ", "");

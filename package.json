@@ -1,14 +1,14 @@
 {
-  "name": "gig-payout",
+  "name": "syphus",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter @gig-payout/web dev",
+    "dev": "pnpm --filter @syphus/web dev",
     "build": "pnpm -r run build",
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
     "typecheck": "pnpm -r run typecheck",
-    "db:generate": "pnpm --filter @gig-payout/db generate",
-    "db:migrate": "pnpm --filter @gig-payout/db migrate"
+    "db:generate": "pnpm --filter @syphus/db generate",
+    "db:migrate": "pnpm --filter @syphus/db migrate"
   },
   "engines": {
     "node": ">=22"

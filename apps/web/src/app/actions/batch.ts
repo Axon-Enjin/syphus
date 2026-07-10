@@ -1,18 +1,18 @@
 "use server";
 
-import { and, desc, eq } from "@gig-payout/db";
+import { and, desc, eq } from "@syphus/db";
 import {
   getDb,
   batches,
   batchItems,
   wallets,
   withDbRetry,
-} from "@gig-payout/db";
-import { buildSep7Uri } from "@gig-payout/stellar";
+} from "@syphus/db";
+import { buildSep7Uri } from "@syphus/stellar";
 import {
   isSorobanEnabled,
   registerBatch,
-} from "@gig-payout/stellar";
+} from "@syphus/stellar";
 import { auth } from "@/lib/auth";
 import { getUserTier } from "@/lib/auth-helpers";
 import { parseBatchCsv, sumBatchAmounts } from "@/lib/batch-csv";

@@ -3,7 +3,7 @@ import { getUserWallet } from "@/lib/indexer";
 import {
   getHorizonUrl,
   getNetworkPassphrase,
-} from "@gig-payout/stellar";
+} from "@syphus/stellar";
 import { WalletSetup } from "./wallet-setup";
 
 export default async function OnboardPage() {

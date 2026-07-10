@@ -1,5 +1,5 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import type { Transaction } from "@gig-payout/db";
+import type { Transaction } from "@syphus/db";
 
 export function transactionsToCsv(rows: Transaction[]): string {
   const header = "date,amount_usdc,sender,transaction_hash,memo";
@@ -36,7 +36,7 @@ export function transactionsToPdfHtml(
 <html><head><meta charset="utf-8"><title>Income Report</title>
 <style>body{font-family:IBM Plex Sans,sans-serif;padding:40px;color:#1a1a18}table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e8e8e4;padding:8px;text-align:left}h1{color:#0d6e4f}</style>
 </head><body>
-<h1>Gig Payout Income Report</h1>
+<h1>Syphus Income Report</h1>
 <p>Recipient: ${userName}</p>
 <p>Total USDC: ${total.toFixed(2)}</p>
 <p>Generated: ${new Date().toISOString()}</p>
@@ -67,7 +67,7 @@ export async function transactionsToPdf(
   const addPage = () => {
     page = doc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
     y = PAGE_HEIGHT - MARGIN;
-    page.drawText("Gig Payout Income Report (continued)", {
+    page.drawText("Syphus Income Report (continued)", {
       x: MARGIN,
       y,
       size: 10,
@@ -91,7 +91,7 @@ export async function transactionsToPdf(
     y -= size + 6;
   };
 
-  drawLine("Gig Payout Income Report", 18, true);
+  drawLine("Syphus Income Report", 18, true);
   drawLine(`Recipient: ${userName}`);
   drawLine(`Total USDC: ${total.toFixed(2)}`);
   drawLine(`Payments: ${rows.length}`);

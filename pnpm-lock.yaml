@@ -10,18 +10,18 @@ importers:
 
   apps/web:
     dependencies:
-      '@gig-payout/anchors':
-        specifier: workspace:*
-        version: link:../../packages/anchors
-      '@gig-payout/db':
-        specifier: workspace:*
-        version: link:../../packages/db
-      '@gig-payout/stellar':
-        specifier: workspace:*
-        version: link:../../packages/stellar
       '@stellar/freighter-api':
         specifier: ^6.0.1
         version: 6.0.1
+      '@syphus/anchors':
+        specifier: workspace:*
+        version: link:../../packages/anchors
+      '@syphus/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@syphus/stellar':
+        specifier: workspace:*
+        version: link:../../packages/stellar
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.3

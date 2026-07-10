@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getBatchDetail } from "@/app/actions/batch";
 import { BatchReconciliation } from "@/components/dashboard/batch-reconciliation";
 import { PageHeader } from "@/components/ui";
-import { getBatchOnChain, isSorobanEnabled } from "@gig-payout/stellar";
+import { getBatchOnChain, isSorobanEnabled } from "@syphus/stellar";
 
 export default async function BatchDetailPage({
   params,

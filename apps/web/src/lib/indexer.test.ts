@@ -9,14 +9,14 @@ const mockCursorUpsert = vi.fn();
 const mockSelectFrom = vi.fn();
 const mockSelect = vi.fn();
 
-vi.mock("@gig-payout/stellar", () => ({
+vi.mock("@syphus/stellar", () => ({
   fetchPayments: (...args: unknown[]) => mockFetchPayments(...args),
   isSorobanEnabled: () => false,
   markLinkPaid: vi.fn(),
 }));
 
-vi.mock("@gig-payout/db", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@gig-payout/db")>();
+vi.mock("@syphus/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@syphus/db")>();
   return {
     ...actual,
     getDb: () => ({

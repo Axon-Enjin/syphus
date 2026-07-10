@@ -1,11 +1,11 @@
-import { eq, desc, and, gte, lte } from "@gig-payout/db";
+import { eq, desc, and, gte, lte } from "@syphus/db";
 import {
   getDb,
   wallets,
   transactions,
   indexerCursors,
-} from "@gig-payout/db";
-import { fetchPayments } from "@gig-payout/stellar";
+} from "@syphus/db";
+import { fetchPayments } from "@syphus/stellar";
 import { settlePaymentLinkOnChain } from "@/lib/soroban-settlement";
 
 export interface WalletIndexResult {

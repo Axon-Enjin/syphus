@@ -1,12 +1,12 @@
 # Operations & Observability Runbook (OPS)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** Tech lead
 **Status:** Draft
 **Last reconciled:** N/A (not yet reconciled)
-**Sources:** [sdd-gig-payout.md](sdd-gig-payout.md), [rfc-gig-payout-anchor-orchestration.md](rfc-gig-payout-anchor-orchestration.md)
+**Sources:** [sdd-syphus.md](sdd-syphus.md), [rfc-syphus-anchor-orchestration.md](rfc-syphus-anchor-orchestration.md)
 
 ---
 
@@ -59,7 +59,7 @@ Error budget: 0.5% monthly downtime ≈ 3.6 hours.
 2. Classify: P0 money loss, P1 off-ramp/receive broken, P2 degraded
 3. Mitigate: flip `ANCHOR_PROVIDER`, disable off-ramp banner, Vercel rollback
 4. Communicate: status page (Notion public page v1)
-5. Postmortem within 48h for P0/P1 → `docs/pm-gig-payout-001.md`
+5. Postmortem within 48h for P0/P1 → `docs/pm-syphus-001.md`
 
 **Rollback:** Vercel instant rollback to last green deploy. DB: run down migration only if forward migration caused incident.
 

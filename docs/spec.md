@@ -1,4 +1,4 @@
-# Gig Payout: Cross-Border Freelancer Payment Rail
+# Syphus: Cross-Border Freelancer Payment Rail
 
 **Source ideas:** #10, #39, #68, #295 (Freelancer Money Stack reframed)  
 **Validation status:** Evidence-based rank #1. **Gated on Exp 3** before serious GTM spend.  
@@ -27,7 +27,7 @@ Cross-border freelancers everywhere wait 3–7 days and lose 3–5% to PayPal, W
 
 ### Why not a rate-comparison product?
 
-Exp 1 (Jul 2026): Stellar/Coins.ph route ~₱262 **less** than Xoom @ $200 (2.1% worse). Park Stellar-vs-best comparison UI. Gig payout wins on **speed and rail ownership**, not consumer rate shopping.
+Exp 1 (Jul 2026): Stellar/Coins.ph route ~₱262 **less** than Xoom @ $200 (2.1% worse). Park Stellar-vs-best comparison UI. Syphus wins on **speed and rail ownership**, not consumer rate shopping.
 
 Exp 6: Only 1–2 live PHP anchors; sufficient for **single-route** payout, not marketplace.
 
@@ -102,7 +102,7 @@ Exp 6: Only 1–2 live PHP anchors; sufficient for **single-route** payout, not 
 
 **Differentiation vs incumbents:**
 
-| | PayPal / Wise | Gig Payout |
+| | PayPal / Wise | Syphus |
 |---|---|---|
 | Settlement | 1–7 days | ~5 seconds on-chain |
 | Income record | Platform export (manual) | Automatic immutable history |
@@ -217,7 +217,7 @@ Run before marketing spend ([human-runbook](../../idea-lab/validation/experiment
 
 | Condition | Action |
 |---|---|
-| Exp 3 fail | **Park gig payout**; stay on wage lock |
+| Exp 3 fail | **Park Syphus**; stay on wage lock |
 | Anchor offline / Coins.ph policy change | Backup BCRemit; corridor pause |
 | Freelancers won't ask clients to pay USDC | Pivot to agency-paid batch only |
 | Lenders reject Stellar history (Exp 4 analog) | Income proof stays export-only, not credit product |

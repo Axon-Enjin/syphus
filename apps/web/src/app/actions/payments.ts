@@ -1,13 +1,13 @@
 "use server";
 
-import { eq } from "@gig-payout/db";
+import { eq } from "@syphus/db";
 import { randomUUID } from "crypto";
-import { getDb, paymentLinks, wallets, users } from "@gig-payout/db";
+import { getDb, paymentLinks, wallets, users } from "@syphus/db";
 import {
   buildSep7Uri,
   isSorobanEnabled,
   registerPaymentLink,
-} from "@gig-payout/stellar";
+} from "@syphus/stellar";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
 

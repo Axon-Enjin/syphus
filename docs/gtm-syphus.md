@@ -1,18 +1,18 @@
 # Go-To-Market (GTM)
 
-**Project:** Gig Payout
+**Project:** Syphus
 **Date:** 2026-07-06
 **Version:** 0.1
 **Owner:** GTM lead
 **Status:** Draft
 **Last reconciled:** N/A (not yet reconciled)
-**Sources:** [brd-gig-payout.md](brd-gig-payout.md), [prd-gig-payout.md](prd-gig-payout.md), [scrutiny-gig-payout.md](scrutiny-gig-payout.md)
+**Sources:** [brd-syphus.md](brd-syphus.md), [prd-syphus.md](prd-syphus.md), [scrutiny-syphus.md](scrutiny-syphus.md)
 
 ---
 
 ## 1. Product Summary (GTM View)
 
-Gig Payout is the payment ops layer for crypto-native companies paying Filipino contractors: USDC invoice links, same-day PHP off-ramp, and automatic income records. We sell to agencies and web3 finance teams, not to fiat-first freelancers.
+Syphus is the payment ops layer for crypto-native companies paying Filipino contractors: USDC invoice links, same-day PHP off-ramp, and automatic income records. We sell to agencies and web3 finance teams, not to fiat-first freelancers.
 
 **Launch gate:** CLR counsel review + 1 successful staging withdrawal + 3 pilot clients committed.
 

@@ -1,13 +1,13 @@
 "use server";
 
-import { and, eq } from "@gig-payout/db";
-import { getDb, wallets, withdrawals, transactions } from "@gig-payout/db";
+import { and, eq } from "@syphus/db";
+import { getDb, wallets, withdrawals, transactions } from "@syphus/db";
 import {
   getActiveProvider,
   getActiveProviderId,
   getProvider,
   isOffRampPaused,
-} from "@gig-payout/anchors";
+} from "@syphus/anchors";
 import { auth } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 import { buildWithdrawCallbackUrl } from "@/lib/callback-url";

@@ -11,7 +11,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
             className="focus-ring font-display flex items-center gap-2 text-sm font-semibold tracking-tight text-[var(--color-text)]"
           >
             <BrandMark className="h-5 w-5 text-[var(--color-accent)]" />
-            Gig Payout
+            Syphus
           </Link>
           <div className="flex items-center gap-3 text-sm">
             <Link

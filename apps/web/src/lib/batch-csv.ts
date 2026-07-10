@@ -1,4 +1,4 @@
-import { isValidPublicKey } from "@gig-payout/stellar";
+import { isValidPublicKey } from "@syphus/stellar";
 
 export interface BatchCsvRow {
   recipientName: string;

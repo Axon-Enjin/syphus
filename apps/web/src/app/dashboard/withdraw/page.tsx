@@ -1,7 +1,7 @@
 import {
   getOffRampStatus,
   isOffRampPaused,
-} from "@gig-payout/anchors";
+} from "@syphus/anchors";
 import { auth } from "@/lib/auth";
 import { getUserWallet } from "@/lib/indexer";
 import { Card, PageHeader } from "@/components/ui";

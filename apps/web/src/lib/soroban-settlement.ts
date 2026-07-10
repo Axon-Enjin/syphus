@@ -1,6 +1,6 @@
-import { eq, or } from "@gig-payout/db";
-import { getDb, paymentLinks } from "@gig-payout/db";
-import { isSorobanEnabled, markLinkPaid } from "@gig-payout/stellar";
+import { eq, or } from "@syphus/db";
+import { getDb, paymentLinks } from "@syphus/db";
+import { isSorobanEnabled, markLinkPaid } from "@syphus/stellar";
 
 /**
  * When Horizon indexes an inbound USDC payment, match it to a payment link
