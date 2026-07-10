@@ -196,9 +196,13 @@ function parseLinkRecord(val: xdr.ScVal): OnChainLinkRecord | null {
     const raw = scValToNative(val) as Record<string, unknown>;
     if (!raw || typeof raw !== "object") return null;
 
+    // Soroban unit-variant enums decode via scValToNative to a single-element
+    // array, e.g. ["Paid"] / ["Registered"]. Unwrap before comparing; keep the
+    // bare-string/number forms as fallbacks for SDK variation.
     const statusRaw = raw.status;
+    const statusTag = Array.isArray(statusRaw) ? statusRaw[0] : statusRaw;
     const status =
-      statusRaw === "Paid" || statusRaw === 1 ? "paid" : "registered";
+      statusTag === "Paid" || statusTag === 1 ? "paid" : "registered";
 
     const amount =
       raw.amount == null ? null : stroopsToUsdc(BigInt(String(raw.amount)));
