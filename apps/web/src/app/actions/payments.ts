@@ -3,7 +3,11 @@
 import { eq } from "@gig-payout/db";
 import { randomUUID } from "crypto";
 import { getDb, paymentLinks, wallets, users } from "@gig-payout/db";
-import { buildSep7Uri } from "@gig-payout/stellar";
+import {
+  buildSep7Uri,
+  isSorobanEnabled,
+  registerPaymentLink,
+} from "@gig-payout/stellar";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
 
@@ -39,22 +43,52 @@ export async function createPaymentLink(formData: FormData) {
     return { error: "Wallet not found" };
   }
 
+  // Slug is the settlement key: SEP-7 memo defaults to slug so the indexer
+  // can match inbound USDC to this link and call mark_link_paid (PRD-F9).
   const slug = randomUUID().replace(/-/g, "").slice(0, 16);
+  const memo = parsed.data.memo?.trim() || slug;
+
   const [link] = await db
     .insert(paymentLinks)
     .values({
       userId: session.user.id,
       slug,
       amountUsdc: parsed.data.amountUsdc ?? null,
-      memo: parsed.data.memo ?? null,
+      memo,
       label: parsed.data.label ?? null,
+      onChainStatus: isSorobanEnabled() ? "pending" : "skipped",
     })
     .returning();
+
+  if (isSorobanEnabled()) {
+    const soroban = await registerPaymentLink({
+      slug,
+      creator: wallet.publicKey,
+      destination: wallet.publicKey,
+      amountUsdc: parsed.data.amountUsdc ?? null,
+      memo,
+    });
+
+    if (soroban.ok && soroban.txHash) {
+      await db
+        .update(paymentLinks)
+        .set({
+          onChainStatus: "registered",
+          registerTxHash: soroban.txHash,
+        })
+        .where(eq(paymentLinks.id, link.id));
+    } else {
+      await db
+        .update(paymentLinks)
+        .set({ onChainStatus: "skipped" })
+        .where(eq(paymentLinks.id, link.id));
+    }
+  }
 
   const sep7 = buildSep7Uri({
     destination: wallet.publicKey,
     amount: parsed.data.amountUsdc,
-    memo: parsed.data.memo,
+    memo,
   });
 
   const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000";
@@ -76,6 +110,8 @@ export async function getPaymentLinkBySlug(slug: string) {
         amountUsdc: paymentLinks.amountUsdc,
         memo: paymentLinks.memo,
         label: paymentLinks.label,
+        registerTxHash: paymentLinks.registerTxHash,
+        onChainStatus: paymentLinks.onChainStatus,
         publicKey: wallets.publicKey,
         userName: users.name,
       })

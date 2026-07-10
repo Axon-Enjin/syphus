@@ -1,15 +1,16 @@
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
+import { authConfig } from "@/lib/auth.config";
+
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
 
-  // Not authenticated - redirect to login
   if (!req.auth) {
     return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
   }
 
-  // Onboard gate: if trustline not ready and not already on onboard page, redirect
   const isOnboardPage = pathname === "/dashboard/onboard";
   const trustlineReady = req.auth.user?.trustlineReady ?? false;
 
@@ -19,8 +20,6 @@ export default auth((req) => {
     );
   }
 
-  // If trustline is ready and user visits onboard, let them through
-  // (they might want to check their wallet info)
   return NextResponse.next();
 });
 

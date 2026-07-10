@@ -90,4 +90,4 @@ export async function withDbRetry<T>(
 }
 
 export * from "./schema";
-export { eq, sql, desc, and, gte, lte } from "drizzle-orm";
+export { eq, sql, desc, and, or, gte, lte } from "drizzle-orm";

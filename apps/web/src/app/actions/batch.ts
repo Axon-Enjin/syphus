@@ -5,9 +5,14 @@ import {
   getDb,
   batches,
   batchItems,
+  wallets,
   withDbRetry,
 } from "@gig-payout/db";
 import { buildSep7Uri } from "@gig-payout/stellar";
+import {
+  isSorobanEnabled,
+  registerBatch,
+} from "@gig-payout/stellar";
 import { auth } from "@/lib/auth";
 import { getUserTier } from "@/lib/auth-helpers";
 import { parseBatchCsv, sumBatchAmounts } from "@/lib/batch-csv";
@@ -76,6 +81,12 @@ export async function createBatchFromCsv(formData: FormData) {
       const db = getDb();
       const totalUsdc = sumBatchAmounts(parsed.rows!);
 
+      const [agencyWallet] = await db
+        .select({ publicKey: wallets.publicKey })
+        .from(wallets)
+        .where(eq(wallets.userId, gate.userId))
+        .limit(1);
+
       const [batch] = await db
         .insert(batches)
         .values({
@@ -84,6 +95,7 @@ export async function createBatchFromCsv(formData: FormData) {
           status: "pending",
           itemCount: parsed.rows!.length,
           totalUsdc,
+          onChainStatus: isSorobanEnabled() ? "pending" : "skipped",
         })
         .returning();
 
@@ -102,6 +114,30 @@ export async function createBatchFromCsv(formData: FormData) {
       }));
 
       await db.insert(batchItems).values(itemValues);
+
+      if (isSorobanEnabled() && agencyWallet?.publicKey) {
+        const soroban = await registerBatch({
+          batchId: batch.id,
+          creator: agencyWallet.publicKey,
+          itemCount: parsed.rows!.length,
+          totalUsdc,
+        });
+
+        if (soroban.ok && soroban.txHash) {
+          await db
+            .update(batches)
+            .set({
+              onChainStatus: "registered",
+              registerTxHash: soroban.txHash,
+            })
+            .where(eq(batches.id, batch.id));
+        } else {
+          await db
+            .update(batches)
+            .set({ onChainStatus: "skipped" })
+            .where(eq(batches.id, batch.id));
+        }
+      }
 
       return {
         ok: true as const,

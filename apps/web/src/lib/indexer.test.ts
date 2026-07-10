@@ -11,6 +11,8 @@ const mockSelect = vi.fn();
 
 vi.mock("@gig-payout/stellar", () => ({
   fetchPayments: (...args: unknown[]) => mockFetchPayments(...args),
+  isSorobanEnabled: () => false,
+  markLinkPaid: vi.fn(),
 }));
 
 vi.mock("@gig-payout/db", async (importOriginal) => {

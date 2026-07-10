@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { SESSION_STRATEGY } from "./auth-helpers";
+import { SESSION_STRATEGY } from "./auth.config";
 
 const loginSchema = z.object({
   email: z.string().email(),

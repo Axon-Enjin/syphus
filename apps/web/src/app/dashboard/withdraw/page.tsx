@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { getUserWallet } from "@/lib/indexer";
 import { Card, PageHeader } from "@/components/ui";
 import { KycStatusCard } from "@/components/kyc-status-card";
+import { MockKycButton } from "./mock-kyc-button";
 import { WithdrawForm } from "./withdraw-form";
 
 export default async function WithdrawPage() {
@@ -15,6 +16,7 @@ export default async function WithdrawPage() {
   const trustlineReady = wallet?.trustlineReady ?? false;
   const offRampPaused = isOffRampPaused();
   const offRampStatus = getOffRampStatus();
+  const isMockAnchor = process.env.ANCHOR_PROVIDER === "mock";
 
   return (
     <div className="mx-auto max-w-lg space-y-8">
@@ -55,10 +57,21 @@ export default async function WithdrawPage() {
       ) : (
         <>
           {!kycComplete && (
-            <Card title="First withdrawal">
+            <Card title="Identity verification required">
               <KycStatusCard complete={false} />
+              <p className="mt-3 text-sm text-[var(--color-muted)]">
+                Your first withdrawal opens the anchor KYC flow. Until that
+                completes, bank payouts stay pending at the partner. Receiving
+                USDC is unaffected.
+              </p>
+              {isMockAnchor && (
+                <div className="mt-4">
+                  <MockKycButton />
+                </div>
+              )}
             </Card>
           )}
+          {kycComplete && <KycStatusCard complete />}
           <WithdrawForm disabled={offRampPaused} />
         </>
       )}

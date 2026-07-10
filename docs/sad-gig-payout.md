@@ -55,6 +55,18 @@ Define 5 development subagents for agentic implementation of Gig Payout v1. Each
 
 ---
 
+### Agent 2b: `soroban-registry-agent`
+
+**Derives from:** PRD-F9, RFC soroban-registry, QAD-F9-*
+
+**Owns:** `PaymentRegistry` Rust contract, WSL deploy scripts, `packages/stellar/src/soroban.ts`, on-chain status fields, checkout verification badge
+
+**Out of scope:** USDC escrow, replacing SEP-7 flows
+
+**Definition of done:** QAD-F9-01 through QAD-F9-04 pass
+
+---
+
 ### Agent 3: `horizon-indexer-agent`
 
 **Derives from:** PRD-F4, SDD §3 indexing flow, QAD-F2-02, QAD-F4-*
@@ -97,14 +109,16 @@ Define 5 development subagents for agentic implementation of Gig Payout v1. Each
 flowchart LR
   Main[Main agent] --> W[wallet-auth]
   Main --> P[payment-link]
+  P --> S[soroban-registry]
   W --> H[horizon-indexer]
   P --> H
+  S --> H
   W --> A[anchor-offramp]
   H --> E[export-qa]
   A --> E
 ```
 
-**Build order:** wallet-auth → payment-link → horizon-indexer → anchor-offramp → export-qa
+**Build order:** wallet-auth → payment-link → soroban-registry → horizon-indexer → anchor-offramp → export-qa
 
 Main agent integrates, resolves cross-module conflicts, updates docs on CR.
 

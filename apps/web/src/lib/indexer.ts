@@ -6,6 +6,7 @@ import {
   indexerCursors,
 } from "@gig-payout/db";
 import { fetchPayments } from "@gig-payout/stellar";
+import { settlePaymentLinkOnChain } from "@/lib/soroban-settlement";
 
 export interface WalletIndexResult {
   walletId: string;
@@ -60,6 +61,17 @@ export async function indexAllWallets(): Promise<{
         if (inserted.length > 0) {
           newCount += 1;
           indexed += 1;
+          // Best-effort on-chain settlement (PRD-F9 / AC-9.5): a Soroban RPC
+          // failure must never abort indexing or discard already-committed
+          // payments. Swallow and continue.
+          try {
+            await settlePaymentLinkOnChain(
+              payment.memo,
+              payment.transaction_hash,
+            );
+          } catch {
+            // intentionally ignored; settlement is retried on next poll
+          }
         }
       }
 

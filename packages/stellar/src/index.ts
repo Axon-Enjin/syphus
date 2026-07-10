@@ -10,6 +10,22 @@ import {
 
 export { checkUsdcTrustline } from "./trustline";
 export type { TrustlineStatus } from "./trustline";
+export {
+  getBatchOnChain,
+  getLinkOnChain,
+  isSorobanEnabled,
+  markLinkPaid,
+  registerBatch,
+  registerPaymentLink,
+  toRegistrySymbol,
+  usdcToStroops,
+} from "./soroban";
+export type {
+  OnChainBatchRecord,
+  OnChainLinkRecord,
+  OnChainLinkStatus,
+  SorobanInvokeResult,
+} from "./soroban";
 
 export function getNetworkPassphrase(): string {
   return process.env.STELLAR_NETWORK === "public"

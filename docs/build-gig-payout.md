@@ -18,9 +18,10 @@
 2. [docs/prd-gig-payout.md](docs/prd-gig-payout.md) (Must-Haves PRD-F1 through PRD-F4)
 3. [docs/sdd-gig-payout.md](docs/sdd-gig-payout.md) (architecture)
 4. [docs/rfc-gig-payout-anchor-orchestration.md](docs/rfc-gig-payout-anchor-orchestration.md) (PRD-F3)
-5. [docs/dsd-gig-payout.md](docs/dsd-gig-payout.md) (UI tokens)
-6. [docs/qad-gig-payout.md](docs/qad-gig-payout.md) (test matrix)
-7. [docs/sad-gig-payout.md](docs/sad-gig-payout.md) (agent roster)
+5. [docs/rfc-gig-payout-soroban-registry.md](docs/rfc-gig-payout-soroban-registry.md) (PRD-F9)
+6. [docs/dsd-gig-payout.md](docs/dsd-gig-payout.md) (UI tokens)
+7. [docs/qad-gig-payout.md](docs/qad-gig-payout.md) (test matrix)
+8. [docs/sad-gig-payout.md](docs/sad-gig-payout.md) (agent roster)
 
 **Traceability map:**
 
@@ -30,6 +31,7 @@
 | PRD-F2 | §4 SEP-7 | - | F2-* | payment-link |
 | PRD-F3 | §4 anchor | anchor-orchestration | F3-* | anchor-offramp |
 | PRD-F4 | §3 indexer | - | F4-* | horizon-indexer, export-qa |
+| PRD-F9 | §2 Soroban | soroban-registry | F9-* | soroban-registry |
 
 **Definition of done:** QAD §6 + Production Readiness Gate in FMD AGENTS.md.
 
@@ -58,6 +60,8 @@ See [sad-gig-payout.md](sad-gig-payout.md). Main agent orchestrates; do not spaw
 | Auth.js v5 (`next-auth@5`) | 5.x | https://authjs.dev |
 | Drizzle ORM | 0.39.x | https://orm.drizzle.team |
 | Zod | 3.24.x | https://zod.dev |
+| Soroban SDK (Rust) | 22.x | https://soroban.stellar.org |
+| stellar CLI | latest | Build/deploy in WSL only |
 
 ### Deprecations register (use X not Y)
 
@@ -95,6 +99,17 @@ export function buildSep7Uri(destination: string, amount: string, memo?: string)
 
 Use cursor from last indexed `paging_token`; upsert on `transaction_hash` unique constraint.
 
+### Soroban registry (PRD-F9)
+
+Build and deploy in WSL:
+
+```bash
+packages/contracts/scripts/build.sh
+SOROBAN_ADMIN_SECRET=S... packages/contracts/scripts/deploy-testnet.sh
+```
+
+Invoke from TypeScript via `@gig-payout/stellar` `registerPaymentLink`, `markLinkPaid`, `getLinkOnChain`. Set `SOROBAN_ENABLED=false` to skip when contract is not deployed.
+
 ---
 
 ## 5. Conventions & Guardrails
@@ -114,7 +129,8 @@ Use cursor from last indexed `paging_token`; upsert on `transaction_hash` unique
 ```
 apps/web/          # Next.js app
 packages/anchors/  # AnchorProvider implementations
-packages/stellar/  # SEP-7, Horizon helpers
+packages/stellar/  # SEP-7, Horizon helpers, Soroban client
+packages/contracts/ # PaymentRegistry Rust crate (build in WSL)
 packages/db/       # Drizzle schema + migrations
 ```
 

@@ -5,7 +5,7 @@
 **Version:** 0.1
 **Owner:** QA lead
 **Status:** Draft
-**Last reconciled:** N/A (not yet reconciled)
+**Last reconciled:** 2026-07-10 (unit/integration suite green: 74 tests across web + packages; E2E and manual staging withdrawal still pending)
 **Sources:** [prd-gig-payout.md](prd-gig-payout.md), [sdd-gig-payout.md](sdd-gig-payout.md)
 
 ---
@@ -81,6 +81,16 @@ Test wallets: funded testnet USDC accounts; never commit secrets.
 | QAD-SEC-02 | SSRF on anchor callback URL | Blocked |
 | QAD-SEC-03 | Session fixation | New session on login |
 
+### PRD-F9: On-chain payment registry
+
+| ID | Type | Scenario | Expected |
+|----|------|----------|----------|
+| QAD-F9-01 | Happy | Create link with Soroban enabled | `register_link` tx hash stored; status `registered` |
+| QAD-F9-02 | Happy | Inbound payment with matching memo | `mark_link_paid` invoked; status `paid` |
+| QAD-F9-03 | Happy | Checkout shows paid link | Verification badge visible |
+| QAD-F9-04 | Sad | Soroban disabled | Link created; `on_chain_status=skipped` |
+| QAD-F9-05 | Smoke | WSL deploy + initialize | Contract ID in env; `get_link` returns record |
+
 ---
 
 ## 4. Automation vs. Manual Testing
@@ -108,6 +118,7 @@ Test wallets: funded testnet USDC accounts; never commit secrets.
 ## 6. Release Criteria (Definition of Done)
 
 - [ ] All QAD-F1 through QAD-F4 happy + sad paths pass in CI
+- [ ] QAD-F9-01 through QAD-F9-04 pass when Soroban env configured
 - [ ] All abuse cases QAD-SEC-01 through QAD-SEC-03 pass
 - [ ] Manual staging withdrawal completed once
 - [ ] Production Readiness Gate (AGENTS.md) satisfied

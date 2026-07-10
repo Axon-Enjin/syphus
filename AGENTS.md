@@ -16,9 +16,10 @@ This file guides AI agents implementing Gig Payout. For FMD doc generation comma
 2. [docs/prd-gig-payout.md](docs/prd-gig-payout.md) (Must-Haves PRD-F1 through PRD-F4)
 3. [docs/sdd-gig-payout.md](docs/sdd-gig-payout.md)
 4. [docs/rfc-gig-payout-anchor-orchestration.md](docs/rfc-gig-payout-anchor-orchestration.md)
-5. [docs/dsd-gig-payout.md](docs/dsd-gig-payout.md)
-6. [docs/qad-gig-payout.md](docs/qad-gig-payout.md)
-7. [docs/sad-gig-payout.md](docs/sad-gig-payout.md)
+5. [docs/rfc-gig-payout-soroban-registry.md](docs/rfc-gig-payout-soroban-registry.md)
+6. [docs/dsd-gig-payout.md](docs/dsd-gig-payout.md)
+7. [docs/qad-gig-payout.md](docs/qad-gig-payout.md)
+8. [docs/sad-gig-payout.md](docs/sad-gig-payout.md)
 
 **Traceability:**
 
@@ -28,6 +29,7 @@ This file guides AI agents implementing Gig Payout. For FMD doc generation comma
 | PRD-F2 | §4 SEP-7 | - | F2-* | payment-link |
 | PRD-F3 | §4 anchor | anchor-orchestration | F3-* | anchor-offramp |
 | PRD-F4 | §3 indexer | - | F4-* | horizon-indexer, export-qa |
+| PRD-F9 | §2 Soroban | soroban-registry | F9-* | soroban-registry |
 
 **Definition of done:** [docs/qad-gig-payout.md](docs/qad-gig-payout.md) §6 + FMD Production Readiness Gate.
 
@@ -37,7 +39,7 @@ This file guides AI agents implementing Gig Payout. For FMD doc generation comma
 
 ## 2. Subagents
 
-See [docs/sad-gig-payout.md](docs/sad-gig-payout.md). Build order: wallet-auth → payment-link → horizon-indexer → anchor-offramp → export-qa.
+See [docs/sad-gig-payout.md](docs/sad-gig-payout.md). Build order: wallet-auth → payment-link → soroban-registry → horizon-indexer → anchor-offramp → export-qa.
 
 ---
 
@@ -56,6 +58,8 @@ See [docs/sad-gig-payout.md](docs/sad-gig-payout.md). Build order: wallet-auth �
 | Playwright | 1.52.x | playwright.dev |
 | Tailwind CSS | 4.x | tailwindcss.com |
 | Zod | 3.24.x | zod.dev |
+| Soroban SDK (Rust) | 22.x | soroban.stellar.org |
+| stellar CLI | latest | WSL build/deploy only |
 
 | Use | Not | Reason |
 |-----|-----|--------|
@@ -90,6 +94,10 @@ export function buildSep7Uri(destination: string, amount: string, memo?: string)
 
 Poll `/accounts/{id}/payments` with cursor; upsert on `transaction_hash` unique constraint.
 
+### Soroban registry (PRD-F9)
+
+Build in WSL: `packages/contracts/scripts/build.sh`. Deploy with `deploy-testnet.sh`. Invoke via `@gig-payout/stellar` soroban helpers.
+
 ---
 
 ## 5. Conventions & Guardrails
@@ -97,7 +105,7 @@ Poll `/accounts/{id}/payments` with cursor; upsert on `transaction_hash` unique 
 - **Research-first:** Verify SEP specs at github.com/stellar/stellar-protocol before implementing
 - **Security:** Secrets in env only; validate Stellar addresses; rate limit money endpoints
 - **Restraint:** Ship PRD-F1 through PRD-F4 before PRD-F5 batch payout
-- **Layout:** `apps/web/`, `packages/anchors/`, `packages/stellar/`, `packages/db/`
+- **Layout:** `apps/web/`, `packages/anchors/`, `packages/stellar/`, `packages/contracts/`, `packages/db/`
 
 ---
 

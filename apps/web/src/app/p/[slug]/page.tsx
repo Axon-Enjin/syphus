@@ -1,6 +1,7 @@
 import { getPaymentLinkBySlug } from "@/app/actions/payments";
 import { PublicCheckout } from "@/components/public-checkout";
 import { PublicLayout } from "@/components/public-layout";
+import { getLinkOnChain, isSorobanEnabled } from "@gig-payout/stellar";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -36,6 +37,18 @@ export default async function PublicCheckoutPage({
   const stellarNetwork =
     process.env.STELLAR_NETWORK === "public" ? "public" : "testnet";
 
+  const onChain =
+    isSorobanEnabled()
+      ? await getLinkOnChain(slug).catch(() => null)
+      : null;
+
+  const paidOnChain =
+    link.onChainStatus === "paid" || onChain?.status === "paid";
+  const registeredOnChain =
+    paidOnChain ||
+    link.onChainStatus === "registered" ||
+    onChain?.status === "registered";
+
   return (
     <PublicLayout>
       <PublicCheckout
@@ -46,6 +59,10 @@ export default async function PublicCheckoutPage({
         publicKey={link.publicKey}
         sep7Uri={link.sep7Uri}
         stellarNetwork={stellarNetwork}
+        verifiedOnChain={paidOnChain}
+        registeredOnChain={registeredOnChain}
+        registerTxHash={link.registerTxHash}
+        paidTxHash={onChain?.paidTxHash ?? null}
       />
     </PublicLayout>
   );

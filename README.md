@@ -5,7 +5,7 @@
 [![Docs: FMD](https://img.shields.io/badge/Docs-FMD_v1.14.0-333)](docs/index.md)
 [![Stellar](https://img.shields.io/badge/Rail-Stellar_USDC-7D00FF)](docs/sdd-gig-payout.md)
 
-USDC payment rail for crypto-native companies paying Filipino contractors: SEP-7 invoice links, same-day PHP off-ramp, automatic income history.
+USDC payment rail for crypto-native companies paying Filipino contractors: SEP-7 invoice links, same-day PHP off-ramp, automatic income history. Native USDC payments are attested on-chain via a Soroban `PaymentRegistry` contract (PRD-F9).
 
 Built on [FMD v1.14.0](docs/index.md). Legacy pre-FMD spec: [docs/spec.md](docs/spec.md).
 
@@ -21,7 +21,19 @@ pnpm typecheck
 pnpm lint
 ```
 
-**Requirements:** Node 22 LTS, pnpm 10+, PostgreSQL (Neon). Stellar testnet for live payment tests.
+**Requirements:** Node 22 LTS, pnpm 10+, PostgreSQL (Neon). Stellar testnet for live payment tests. Soroban contract build requires WSL with `stellar` CLI and Rust toolchain.
+
+### Soroban contract (PRD-F9)
+
+Build and deploy from WSL:
+
+```bash
+packages/contracts/scripts/build.sh
+SOROBAN_ADMIN_SECRET=S... packages/contracts/scripts/deploy-testnet.sh
+# Copy PAYMENT_REGISTRY_CONTRACT_ID to apps/web/.env.local
+```
+
+Set `SOROBAN_ENABLED=true` after deploy. Use `SOROBAN_ENABLED=false` for local dev without a contract.
 
 ### Payment indexing (M2 testnet loop)
 
@@ -39,6 +51,7 @@ Production: [`apps/web/vercel.json`](apps/web/vercel.json) runs `/api/cron/index
 ## What it does
 
 - Freelancer Stellar wallet + SEP-7 payment links (PRD-F1, PRD-F2)
+- Soroban on-chain registry for link/batch attestation (PRD-F9)
 - USDC off-ramp to PHP via mock/Coins.ph anchor (PRD-F3)
 - Payment dashboard + 6-month income CSV/PDF export (PRD-F4)
 - Horizon indexer cron: `GET /api/cron/index-payments` (Bearer `CRON_SECRET`)
@@ -52,7 +65,8 @@ Production: [`apps/web/vercel.json`](apps/web/vercel.json) runs `/api/cron/index
 |------|---------|
 | `apps/web` | Next.js 15 App Router UI + API |
 | `packages/db` | Drizzle schema + Postgres client |
-| `packages/stellar` | SEP-7 URIs, Horizon fetch, keypair gen |
+| `packages/stellar` | SEP-7 URIs, Horizon fetch, Soroban client |
+| `packages/contracts` | PaymentRegistry Soroban contract (build in WSL) |
 | `packages/anchors` | AnchorProvider mock + Coins.ph + failover |
 
 ## Documentation
@@ -60,7 +74,7 @@ Production: [`apps/web/vercel.json`](apps/web/vercel.json) runs `/api/cron/index
 | Doc | Purpose |
 |-----|---------|
 | [Index](docs/index.md) | Full manifest |
-| [PRD](docs/prd-gig-payout.md) | Locked features PRD-F1 through PRD-F4 |
+| [PRD](docs/prd-gig-payout.md) | Locked features PRD-F1 through PRD-F9 |
 | [BUILD](docs/build-gig-payout.md) | Stack pins + golden paths |
 | [GTM pilot script](docs/gtm-pilot-script.md) | Concierge onboarding |
 | [CLR launch checklist](docs/clr-launch-checklist.md) | Pre-GA counsel gate |

@@ -4,7 +4,8 @@ import bcrypt from "bcryptjs";
 import { eq } from "@gig-payout/db";
 import { getDb, users, wallets } from "@gig-payout/db";
 import { z } from "zod";
-import { getTrustlineReadyForUser, SESSION_STRATEGY } from "./auth-helpers";
+import { authConfig } from "./auth.config";
+import { getTrustlineReadyForUser } from "./auth-helpers";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -12,6 +13,7 @@ const loginSchema = z.object({
 });
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
     Credentials({
       name: "credentials",
@@ -54,11 +56,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  session: { strategy: SESSION_STRATEGY },
-  pages: {
-    signIn: "/login",
-  },
   callbacks: {
+    ...authConfig.callbacks,
     async jwt({ token, user, trigger }) {
       if (user) {
         token.sub = user.id;
@@ -66,20 +65,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           (user as { trustlineReady?: boolean }).trustlineReady ?? false;
         token.tier = (user as { tier?: string }).tier ?? "solo";
       }
+      // Session update (Node only) — refresh trustline from DB
       if (trigger === "update" && token.sub) {
         token.trustlineReady = await getTrustlineReadyForUser(token.sub);
       }
       return token;
     },
-    session({ session, token }) {
-      if (session.user && token.sub) {
-        session.user.id = token.sub;
-        session.user.trustlineReady = token.trustlineReady as boolean;
-        session.user.tier = (token.tier as string) ?? "solo";
-      }
-      return session;
-    },
   },
   secret: process.env.AUTH_SECRET,
-  trustHost: true,
 });

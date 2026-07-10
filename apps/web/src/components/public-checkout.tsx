@@ -11,6 +11,10 @@ export interface PublicCheckoutProps {
   publicKey: string;
   sep7Uri: string;
   stellarNetwork?: "testnet" | "public";
+  verifiedOnChain?: boolean;
+  registeredOnChain?: boolean;
+  registerTxHash?: string | null;
+  paidTxHash?: string | null;
 }
 
 export function PublicCheckout({
@@ -21,6 +25,10 @@ export function PublicCheckout({
   publicKey,
   sep7Uri,
   stellarNetwork = "testnet",
+  verifiedOnChain = false,
+  registeredOnChain = false,
+  registerTxHash,
+  paidTxHash,
 }: PublicCheckoutProps) {
   const displayName = userName ?? label ?? "Contractor";
   const amountLabel = amountUsdc ? `${amountUsdc} USDC` : "Any amount";
@@ -42,6 +50,53 @@ export function PublicCheckout({
           {amountLabel}
         </p>
       </div>
+
+      {verifiedOnChain ? (
+        <div className="surface-card border-[var(--color-success-border)] bg-[var(--color-success-bg)] p-4">
+          <p className="text-sm font-medium text-[var(--color-text)]">
+            Verified on Stellar
+          </p>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            This payment link is registered on the Soroban PaymentRegistry
+            contract and marked paid on-chain.
+          </p>
+          {paidTxHash && (
+            <p className="mono mt-2 break-all text-xs text-[var(--color-muted)]">
+              Settlement tx: {paidTxHash}
+            </p>
+          )}
+          {registerTxHash && (
+            <a
+              href={`${explorerBase}/tx/${registerTxHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-accent mt-2 inline-block text-xs"
+            >
+              View registration on explorer
+            </a>
+          )}
+        </div>
+      ) : registeredOnChain ? (
+        <div className="surface-card p-4">
+          <p className="text-sm font-medium text-[var(--color-text)]">
+            Registered on Stellar
+          </p>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            Invoice attested on-chain via Soroban PaymentRegistry. Awaiting
+            payment.
+          </p>
+          {registerTxHash && (
+            <a
+              href={`${explorerBase}/tx/${registerTxHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-accent mt-2 inline-block text-xs"
+            >
+              View registration on explorer
+            </a>
+          )}
+        </div>
+      ) : null}
 
       <div className="callout-warning space-y-2 p-4 text-sm">
         <p>

@@ -50,6 +50,28 @@ async function getWithdrawableBalance(userId: string): Promise<number> {
   return Math.max(0, received - withdrawn);
 }
 
+/** Dev/mock helper: mark anchor KYC complete without a live SEP-24 session. */
+export async function markMockKycComplete() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: "Unauthorized" };
+  }
+
+  if (process.env.ANCHOR_PROVIDER !== "mock") {
+    return {
+      error: "Mock KYC is only available when ANCHOR_PROVIDER=mock",
+    };
+  }
+
+  const db = getDb();
+  await db
+    .update(wallets)
+    .set({ anchorKycComplete: true })
+    .where(eq(wallets.userId, session.user.id));
+
+  return { ok: true as const };
+}
+
 export async function startWithdrawal(formData: FormData) {
   const session = await auth();
   if (!session?.user?.id) {

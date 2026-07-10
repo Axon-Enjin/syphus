@@ -34,6 +34,8 @@ flowchart TB
   end
   subgraph stellar [Stellar]
     Horizon[Horizon API]
+    SorobanRpc[Soroban RPC]
+    Registry[PaymentRegistry contract]
     Network[Stellar Network USDC]
   end
   subgraph anchors [Anchors PH]
@@ -46,6 +48,9 @@ flowchart TB
   Worker --> DB
   ClientWallet --> Network
   Network --> Horizon
+  API --> SorobanRpc
+  SorobanRpc --> Registry
+  Worker --> SorobanRpc
   API --> CoinsPh
   API --> BCRemit
 ```
@@ -57,6 +62,7 @@ flowchart TB
 | Horizon indexer | PRD-F4 payment history | Node worker, cursor-based pagination |
 | Anchor adapter | PRD-F3 off-ramp | SEP-24 interactive flow |
 | Auth | PRD-F1 sessions | Auth.js v5 (`next-auth@5`) with Drizzle adapter on Neon Postgres |
+| Soroban registry | PRD-F9 on-chain attestation | `PaymentRegistry` contract + admin-signed invokes |
 
 ---
 
@@ -68,16 +74,18 @@ flowchart TB
 |-------|---------|-----|
 | `users` | Freelancer accounts | email, name |
 | `wallets` | Stellar public key, encrypted secret ref | public key only on-chain |
-| `payment_links` | SEP-7 link metadata | amount, memo, slug |
+| `payment_links` | SEP-7 link metadata | amount, memo, slug, register_tx_hash, on_chain_status |
 | `transactions` | Indexed inbound USDC | tx hash, sender, amount, ts |
 | `withdrawals` | Off-ramp session state | anchor session id, status |
 | `agencies` | B2B org (v1.1) | company name |
+| `batches` | Agency batch payout | name, total, register_tx_hash, on_chain_status |
 
-### Indexing flow (PRD-F4)
+### Indexing flow (PRD-F4, PRD-F9)
 
 1. Worker polls Horizon `/accounts/{id}/payments` with cursor
 2. Upsert `transactions` idempotently on `transaction_hash`
 3. Dashboard reads from DB, not live Horizon (rate limit + latency)
+4. When memo matches payment link slug, invoke `mark_link_paid` on Soroban registry (PRD-F9)
 
 ---
 
@@ -89,8 +97,10 @@ flowchart TB
 | SEP-7 | URI scheme | PRD-F2 | `web+stellar:pay?...` generation |
 | Coins.ph SEP-24 | Interactive | PRD-F3 | Redirect + callback URL |
 | BCRemit | SEP-24 | PRD-F3 | Fallback when primary unhealthy |
+| Soroban RPC | JSON-RPC | PRD-F9 | `register_link`, `mark_link_paid`, `get_link` |
 
 See [rfc-gig-payout-anchor-orchestration.md](rfc-gig-payout-anchor-orchestration.md) for anchor trade-offs.
+See [rfc-gig-payout-soroban-registry.md](rfc-gig-payout-soroban-registry.md) for registry design.
 
 ---
 

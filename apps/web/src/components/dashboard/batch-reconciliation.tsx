@@ -4,15 +4,21 @@ import Link from "next/link";
 import { useState } from "react";
 import { markBatchItemCompleted } from "@/app/actions/batch";
 import type { Batch, BatchItem } from "@gig-payout/db";
+import type { OnChainBatchRecord } from "@gig-payout/stellar";
 import { Card, StatusBadge } from "@/components/ui";
 import { CopyButton } from "@/components/ui-interactive";
 
 interface BatchReconciliationProps {
   batch: Batch;
   items: BatchItem[];
+  onChainBatch?: OnChainBatchRecord | null;
 }
 
-export function BatchReconciliation({ batch, items }: BatchReconciliationProps) {
+export function BatchReconciliation({
+  batch,
+  items,
+  onChainBatch,
+}: BatchReconciliationProps) {
   const [rows, setRows] = useState(items);
   const [error, setError] = useState<string | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -52,6 +58,23 @@ export function BatchReconciliation({ batch, items }: BatchReconciliationProps) 
           <StatusBadge variant="pending">In progress</StatusBadge>
         )}
       </div>
+
+      {batch.onChainStatus === "registered" && batch.registerTxHash && (
+        <div className="surface-card p-4 text-sm">
+          <p className="font-medium text-[var(--color-text)]">
+            On-chain batch registry
+          </p>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            Registered on Soroban PaymentRegistry
+            {onChainBatch
+              ? ` · ${onChainBatch.itemCount} items · ${onChainBatch.total} USDC`
+              : ""}
+          </p>
+          <p className="mono mt-2 break-all text-xs text-[var(--color-muted)]">
+            {batch.registerTxHash}
+          </p>
+        </div>
+      )}
 
       {error && (
         <p className="text-sm text-red-700" role="alert">

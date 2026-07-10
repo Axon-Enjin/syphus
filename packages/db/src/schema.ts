@@ -42,6 +42,10 @@ export const paymentLinks = pgTable("payment_links", {
   amountUsdc: numeric("amount_usdc", { precision: 18, scale: 7 }),
   memo: varchar("memo", { length: 28 }),
   label: varchar("label", { length: 255 }),
+  registerTxHash: varchar("register_tx_hash", { length: 64 }),
+  onChainStatus: varchar("on_chain_status", { length: 16 })
+    .notNull()
+    .default("skipped"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -99,6 +103,10 @@ export const batches = pgTable("batches", {
   status: varchar("status", { length: 32 }).notNull().default("pending"),
   itemCount: integer("item_count").notNull().default(0),
   totalUsdc: numeric("total_usdc", { precision: 18, scale: 7 }).notNull().default("0"),
+  registerTxHash: varchar("register_tx_hash", { length: 64 }),
+  onChainStatus: varchar("on_chain_status", { length: 16 })
+    .notNull()
+    .default("skipped"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

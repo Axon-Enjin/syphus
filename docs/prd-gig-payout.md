@@ -42,6 +42,7 @@
 | PRD-F6 | Client checkout page | Branded "Pay [Name] in USDC" public page | Should-Have |
 | PRD-F7 | Multi-corridor modules | IN, NG, LATAM anchor swap | Won't-Have (v1) |
 | PRD-F8 | Platform withdrawal | Upwork/Fiverr faster payout | Won't-Have (v1) |
+| PRD-F9 | On-chain payment registry | Soroban attestation for links and batches; settlement marking | Must-Have (hackathon) |
 
 ---
 
@@ -91,6 +92,18 @@
 | AC-4.3 | PDF export includes summary totals and transaction table |
 | AC-4.4 | Export excludes pending/unconfirmed payments |
 
+### PRD-F9: On-chain payment registry
+
+**US-5:** As Jordan, I see a payment link registered on Stellar Soroban so clients can verify the invoice was not tampered with.
+
+| AC | Criterion |
+|----|-----------|
+| AC-9.1 | Payment link creation invokes `register_link` when Soroban is enabled |
+| AC-9.2 | Agency batch creation invokes `register_batch` when Soroban is enabled |
+| AC-9.3 | Indexer marks link paid on-chain when inbound memo matches slug |
+| AC-9.4 | Checkout page shows on-chain verification when link status is `paid` |
+| AC-9.5 | Soroban disabled or RPC failure does not block SEP-7 link creation |
+
 ---
 
 ## 5. App Flow & UX Intent
@@ -120,7 +133,7 @@ flowchart LR
 | Pay | Payment link | Generate / share link | `/pay/link` | Yes | PRD-F2 |
 | Withdraw | Off-ramp | Anchor withdrawal | `/withdraw` | Yes | PRD-F3 |
 | Export | Reports | CSV/PDF export | `/export` | Yes | PRD-F4 |
-| Public | Checkout | Client payment page | `/p/:slug` | No | PRD-F2 |
+| Public | Checkout | Client payment page | `/p/:slug` | No | PRD-F2, PRD-F9 |
 | Onboard | Setup | Wallet setup | `/onboard` | Yes | PRD-F1 |
 
 ---
@@ -131,7 +144,8 @@ flowchart LR
 - Upwork API integration (PRD-F8)
 - Multi-corridor (PRD-F7)
 - Tax filing to BIR
-- Batch payout (PRD-F5 deferred to v1.1 unless pilot demands)
+
+**Note (2026-07-10):** PRD-F5 agency batch payout, previously deferred to v1.1, was pulled forward and implemented (CSV upload, multi-link generation, reconciliation view) alongside the Must-Haves. It is included in this release.
 
 ---
 

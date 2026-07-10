@@ -21,6 +21,9 @@
 | 6 | 2026-07-06T04:35Z | check.py scale full strict | - | spec.md voice fix, index row | - | 0 failures |
 | 7 | 2026-07-06T04:10Z | Lock specs: hybrid revenue, Auth.js v5 | CR implicit | BRD, PRD, SDD, DSD, RFC, index | - | 0 failures |
 | 8 | 2026-07-06T04:20Z | v1 monorepo scaffold + PRD-F1..F4 | BUILD | apps/web, packages/* | - | build ok |
+| 9 | 2026-07-07T08:00Z | PRD-F9 Soroban PaymentRegistry | RFC-002 | packages/contracts, soroban.ts, docs | - | not run |
+| 10 | 2026-07-07T09:00Z | PRD-F5 agency batch payout | BUILD | actions/batch.ts, dashboard/batch, batch-reconciliation | - | build ok |
+| 11 | 2026-07-10T13:50Z | Fix indexer settlement regression + reconcile docs | - | indexer.ts, indexer.test.ts, index/PRD/QAD/LOG | - | 74 tests pass; typecheck clean |
 
 ---
 

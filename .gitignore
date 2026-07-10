@@ -10,6 +10,9 @@ out/
 dist/
 build/
 
+# Rust / Soroban contract build artifacts
+packages/contracts/**/target/
+
 # Environment
 .env
 .env.local

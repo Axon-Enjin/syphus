@@ -2,7 +2,7 @@
 
 **Project slug:** `gig-payout`
 **Maintained by:** Project team
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-10
 **Built on FMD v1.14.0**
 
 ---
@@ -37,6 +37,7 @@
 | RFC ID | File | Feature | Status | Last Updated |
 |--------|------|---------|--------|--------------|
 | gig-payout-rfc-001 | [rfc-gig-payout-anchor-orchestration.md](rfc-gig-payout-anchor-orchestration.md) | PRD-F3 anchor off-ramp | Locked | 2026-07-06 |
+| gig-payout-rfc-002 | [rfc-gig-payout-soroban-registry.md](rfc-gig-payout-soroban-registry.md) | PRD-F9 on-chain registry | Locked | 2026-07-07 |
 
 ---
 
@@ -60,16 +61,18 @@
 
 Run at session start:
 
-- [ ] All Full-scale required docs present (BRD, PRD, DSD, SDD, QAD, BUILD, CLR, GTM, OPS)
-- [ ] Scrutiny verdict PROCEED WITH FIXES; TBD items tracked in BRD/GTM
-- [ ] PRD Must-Haves PRD-F1 through PRD-F4 referenced in SDD and QAD
-- [ ] Production Readiness Gate not yet passed (code scaffolded; mainnet deploy pending)
+- [x] All Full-scale required docs present (BRD, PRD, DSD, SDD, QAD, BUILD, CLR, GTM, OPS)
+- [x] Scrutiny verdict PROCEED WITH FIXES; TBD items tracked in BRD/GTM
+- [x] PRD Must-Haves PRD-F1 through PRD-F4 referenced in SDD and QAD
+- [x] PRD-F1..F4 (Must-Have) + F5 (batch) + F9 (Soroban) implemented; full suite green (74 tests, typecheck clean, 2026-07-10)
+- [ ] Production Readiness Gate not yet passed (implemented against testnet; mainnet deploy + Soroban testnet deploy pending; F9 code uncommitted)
+- [ ] Manual staging mainnet withdrawal (QAD §6) not yet run
 - [ ] BUILD/QAD reconcile after pilot on testnet
 
-**Next actions:** Lock PRD after revenue model decision; begin BUILD implementation per SAD roster.
+**Next actions:** Commit uncommitted F9 Soroban work; deploy PaymentRegistry to testnet and wire contract ID; run manual staging withdrawal; move BUILD/QAD from Draft toward Locked after testnet pilot.
 
 ---
 
 ## 5. Production Readiness Gate
 
-Reference: FMD AGENTS.md. Status: **Not started** (docs-only phase).
+Reference: FMD AGENTS.md. Status: **In progress** (implementation complete for F1-F5 + F9 against testnet; not passed). Outstanding for gate: mainnet + Soroban testnet deploy, contract ID wiring, one manual staging withdrawal, OPS anchor-down alerts, and committing the F9 working tree.
