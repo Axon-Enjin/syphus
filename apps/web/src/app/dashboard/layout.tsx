@@ -12,17 +12,12 @@ export default async function DashboardLayout({
     ? await getUserWallet(session.user.id)
     : null;
 
-  const hasAddress = !!wallet?.publicKey;
   const trustlineReady = !!wallet?.trustlineReady;
-  // Onboarding = account (always step 1) + payment address + enable USDC.
-  // Identity verification is deferred to the first withdrawal, not counted here.
-  const currentStep = 1 + (hasAddress ? 1 : 0) + (trustlineReady ? 1 : 0);
 
   return (
     <DashboardShell
       onboardingComplete={trustlineReady}
-      currentStep={currentStep}
-      totalSteps={3}
+      userEmail={session?.user?.email ?? null}
     >
       {children}
     </DashboardShell>

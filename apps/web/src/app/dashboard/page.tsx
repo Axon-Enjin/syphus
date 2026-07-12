@@ -79,8 +79,8 @@ export default async function DashboardPage() {
                 You are ready to receive payments
               </p>
               <p className="mt-2 text-sm text-[var(--color-muted)]">
-                Share a payment link with your client. Payments appear on the
-                left within about 30 seconds.
+                Share a payment link with your client. Click Refresh to sync
+                inbound USDC from Stellar.
               </p>
               <Link
                 href="/dashboard/pay"
@@ -96,6 +96,7 @@ export default async function DashboardPage() {
               publicKey={wallet.publicKey}
               trustlineReady={wallet.trustlineReady}
               anchorKycComplete={wallet.anchorKycComplete}
+              isExternal={!wallet.encryptedSecret}
             />
           )}
 

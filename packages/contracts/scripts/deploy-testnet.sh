@@ -14,7 +14,16 @@ if [[ ! -f "$WASM" ]]; then
   exit 1
 fi
 
-ADMIN_PUB="$(stellar keys address "$SOROBAN_ADMIN_SECRET")"
+# `stellar keys address` only resolves identity names (CLI 21+), so register
+# the secret under a throwaway identity to derive the public key.
+TMP_IDENTITY="syphus-deploy-tmp-$$"
+echo "$SOROBAN_ADMIN_SECRET" | stellar keys add "$TMP_IDENTITY" --secret-key >/dev/null
+ADMIN_PUB="$(stellar keys public-key "$TMP_IDENTITY")"
+stellar keys rm "$TMP_IDENTITY" >/dev/null 2>&1 || true
+if [[ -z "$ADMIN_PUB" ]]; then
+  echo "Could not derive admin public key from SOROBAN_ADMIN_SECRET."
+  exit 1
+fi
 echo "Funding admin $ADMIN_PUB via Friendbot..."
 curl -sf "https://friendbot.stellar.org?addr=${ADMIN_PUB}" >/dev/null || true
 

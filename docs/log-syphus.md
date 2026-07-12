@@ -24,6 +24,7 @@
 | 9 | 2026-07-07T08:00Z | PRD-F9 Soroban PaymentRegistry | RFC-002 | packages/contracts, soroban.ts, docs | - | not run |
 | 10 | 2026-07-07T09:00Z | PRD-F5 agency batch payout | BUILD | actions/batch.ts, dashboard/batch, batch-reconciliation | - | build ok |
 | 11 | 2026-07-10T13:50Z | Fix indexer settlement regression + reconcile docs | - | indexer.ts, indexer.test.ts, index/PRD/QAD/LOG | - | 74 tests pass; typecheck clean |
+| 12 | 2026-07-12T05:40Z | Verify PRD-F9 testnet deploy (CBFUNL...D4AT); fix soroban.ts status enum parse (AC-9.4); fix deploy-testnet.sh pubkey derivation (CLI 25.x); LF endings via .gitattributes; pin ed25519-dalek 2.2.0 | - | soroban.ts, soroban.test.ts, deploy-testnet.sh, .gitattributes, Cargo.lock, index.md | on-chain roundtrip pass | 76 tests pass; cargo test 2 pass; typecheck clean |
 
 ---
 

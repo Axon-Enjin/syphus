@@ -300,3 +300,69 @@ export async function markTrustlineReady(userId: string) {
     .where(eq(wallets.userId, userId));
   return { ok: true as const };
 }
+
+export interface LinkFreighterResult {
+  ok?: true;
+  error?: string;
+}
+
+/**
+ * Link the signed-in user's Syphus wallet to a Freighter public key.
+ * Clears custodial secret; trustline status is re-checked on-chain.
+ */
+export async function linkFreighterWallet(
+  publicKey: string,
+): Promise<LinkFreighterResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: "Not authenticated" };
+  }
+
+  const trimmed = publicKey.trim();
+  if (!isValidPublicKey(trimmed)) {
+    return { error: "Invalid Stellar address" };
+  }
+
+  const db = getDb();
+
+  const [current] = await db
+    .select()
+    .from(wallets)
+    .where(eq(wallets.userId, session.user.id))
+    .limit(1);
+
+  if (!current) {
+    return { error: "No wallet found" };
+  }
+
+  const [existing] = await db
+    .select({ userId: wallets.userId })
+    .from(wallets)
+    .where(eq(wallets.publicKey, trimmed))
+    .limit(1);
+
+  if (existing && existing.userId !== session.user.id) {
+    return {
+      error: "This Stellar address is already linked to another account",
+    };
+  }
+
+  const trustlineStatus = await checkUsdcTrustline(trimmed);
+  const pubkeyChanged = current.publicKey !== trimmed;
+
+  await db
+    .update(wallets)
+    .set({
+      publicKey: trimmed,
+      encryptedSecret: null,
+      trustlineReady: trustlineStatus.exists,
+    })
+    .where(eq(wallets.userId, session.user.id));
+
+  if (pubkeyChanged) {
+    const { resetIndexerCursor } = await import("@/lib/indexer");
+    await resetIndexerCursor(current.id);
+  }
+
+  return { ok: true };
+}

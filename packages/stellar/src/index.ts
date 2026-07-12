@@ -2,6 +2,7 @@ import {
   Asset,
   Horizon,
   Keypair,
+  Memo,
   Networks,
   Operation,
   StrKey,
@@ -292,6 +293,99 @@ export interface BuildTrustlineTxResult {
   success: boolean;
   xdr?: string;
   error?: string;
+}
+
+export interface BuildPaymentTxParams {
+  sourcePublicKey: string;
+  destination: string;
+  amount: string;
+  memo?: string | null;
+}
+
+export interface BuildPaymentTxResult {
+  success: boolean;
+  xdr?: string;
+  error?: string;
+}
+
+/**
+ * Build an unsigned USDC payment transaction XDR.
+ * The client (e.g. Freighter) will sign and submit it.
+ */
+export async function buildUnsignedPaymentTx(
+  params: BuildPaymentTxParams,
+): Promise<BuildPaymentTxResult> {
+  try {
+    const { sourcePublicKey, destination, amount, memo } = params;
+
+    if (!isValidPublicKey(sourcePublicKey)) {
+      return { success: false, error: "Invalid source wallet address" };
+    }
+    if (!isValidPublicKey(destination)) {
+      return { success: false, error: "Invalid destination address" };
+    }
+
+    const amountNum = Number(amount);
+    if (!Number.isFinite(amountNum) || amountNum <= 0) {
+      return { success: false, error: "Enter a valid USDC amount greater than 0" };
+    }
+
+    if (memo && memo.length > 28) {
+      return { success: false, error: "Memo must be 28 characters or fewer" };
+    }
+
+    const horizonUrl = getHorizonUrl();
+    const server = new Horizon.Server(horizonUrl);
+
+    let account;
+    try {
+      account = await server.loadAccount(sourcePublicKey);
+    } catch {
+      return {
+        success: false,
+        error:
+          "Your Freighter account is not funded on this network. Switch Freighter to Testnet and fund it with Friendbot first.",
+      };
+    }
+
+    const usdcAsset = new Asset("USDC", getUsdcIssuer());
+    const networkPassphrase = getNetworkPassphrase();
+
+    let builder = new TransactionBuilder(account, {
+      fee: "100",
+      networkPassphrase,
+    }).addOperation(
+      Operation.payment({
+        destination,
+        asset: usdcAsset,
+        amount: normalizeUsdcAmount(amount),
+      }),
+    );
+
+    if (memo) {
+      builder = builder.addMemo(Memo.text(memo));
+    }
+
+    const transaction = builder.setTimeout(180).build();
+
+    return { success: true, xdr: transaction.toXDR() };
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to build payment",
+    };
+  }
+}
+
+/** Normalize a USDC amount for Stellar payment ops (max 7 decimals). */
+export function normalizeUsdcAmount(amount: string): string {
+  const n = Number(amount);
+  if (!Number.isFinite(n) || n <= 0) {
+    throw new Error("Invalid amount");
+  }
+  // Trim trailing zeros but keep at least one fractional digit when needed
+  const fixed = n.toFixed(7);
+  return fixed.replace(/\.?0+$/, "") || "0";
 }
 
 /**

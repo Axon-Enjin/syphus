@@ -2,7 +2,7 @@
 
 **Project slug:** `syphus`
 **Maintained by:** Project team
-**Last updated:** 2026-07-10
+**Last updated:** 2026-07-12
 **Built on FMD v1.14.0**
 
 ---
@@ -64,15 +64,17 @@ Run at session start:
 - [x] All Full-scale required docs present (BRD, PRD, DSD, SDD, QAD, BUILD, CLR, GTM, OPS)
 - [x] Scrutiny verdict PROCEED WITH FIXES; TBD items tracked in BRD/GTM
 - [x] PRD Must-Haves PRD-F1 through PRD-F4 referenced in SDD and QAD
-- [x] PRD-F1..F4 (Must-Have) + F5 (batch) + F9 (Soroban) implemented; full suite green (74 tests, typecheck clean, 2026-07-10)
-- [ ] Production Readiness Gate not yet passed (implemented against testnet; mainnet deploy + Soroban testnet deploy pending; F9 code uncommitted)
+- [x] PRD-F1..F4 (Must-Have) + F5 (batch) + F9 (Soroban) implemented; full suite green (76 tests, typecheck clean, 2026-07-12)
+- [x] PaymentRegistry deployed + initialized on testnet: `CBFUNL6N4I6VFT6PRCG6BAUKNKGC4PFWHWGWKNVY5I6AKYW2CJLQD4AT` (admin `GBZM...6MSQ`); on-chain roundtrip verified 2026-07-12 (register_link tx `c8778065...ada1ab`, mark_link_paid tx `69405d83...c5326`); contract ID wired in app env
+- [ ] Production Readiness Gate not yet passed (mainnet deploy pending)
 - [ ] Manual staging mainnet withdrawal (QAD §6) not yet run
+- [ ] OPS anchor-down alerts not yet wired
 - [ ] BUILD/QAD reconcile after pilot on testnet
 
-**Next actions:** Commit uncommitted F9 Soroban work; deploy PaymentRegistry to testnet and wire contract ID; run manual staging withdrawal; move BUILD/QAD from Draft toward Locked after testnet pilot.
+**Next actions:** Run manual staging withdrawal; wire OPS anchor-down alerts; mainnet deploy; move BUILD/QAD from Draft toward Locked after testnet pilot.
 
 ---
 
 ## 5. Production Readiness Gate
 
-Reference: FMD AGENTS.md. Status: **In progress** (implementation complete for F1-F5 + F9 against testnet; not passed). Outstanding for gate: mainnet + Soroban testnet deploy, contract ID wiring, one manual staging withdrawal, OPS anchor-down alerts, and committing the F9 working tree.
+Reference: FMD AGENTS.md. Status: **In progress** (implementation complete for F1-F5 + F9; Soroban testnet deploy + contract ID wiring verified 2026-07-12). Outstanding for gate: mainnet deploy, one manual staging withdrawal, OPS anchor-down alerts.

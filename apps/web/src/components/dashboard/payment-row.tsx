@@ -19,6 +19,7 @@ export function PaymentRow({
 }: PaymentRowProps) {
   const { php, label } = formatPhpApprox(amountUsdc);
   const horizonBase = getStellarExplorerBase();
+  const displayAmount = amountUsdc.replace(/\.?0+$/, "") || amountUsdc;
 
   return (
     <article className="payment-row">
@@ -30,17 +31,15 @@ export function PaymentRow({
       </time>
 
       <div className="min-w-0">
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          <span className="font-display text-xl font-semibold tracking-tight text-[var(--color-text)]">
-            {php}
-          </span>
-          <span className="text-xs text-[var(--color-muted)]">{label}</span>
-        </div>
+        <p className="text-xs font-medium text-[var(--color-muted)]">Received</p>
+        <p className="font-display text-xl font-semibold tracking-tight text-[var(--color-success)]">
+          +{displayAmount} USDC
+        </p>
         <p className="mt-0.5 text-sm text-[var(--color-muted)]">
-          {amountUsdc} USDC
+          {php} {label}
         </p>
         <p className="mono mt-1 truncate text-xs text-[var(--color-muted)]">
-          {senderAddress.slice(0, 16)}...
+          From {senderAddress.slice(0, 8)}…{senderAddress.slice(-6)}
         </p>
       </div>
 

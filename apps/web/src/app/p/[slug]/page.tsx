@@ -1,7 +1,12 @@
 import { getPaymentLinkBySlug } from "@/app/actions/payments";
 import { PublicCheckout } from "@/components/public-checkout";
 import { PublicLayout } from "@/components/public-layout";
-import { getLinkOnChain, isSorobanEnabled } from "@syphus/stellar";
+import {
+  getHorizonUrl,
+  getLinkOnChain,
+  getNetworkPassphrase,
+  isSorobanEnabled,
+} from "@syphus/stellar";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -59,6 +64,8 @@ export default async function PublicCheckoutPage({
         publicKey={link.publicKey}
         sep7Uri={link.sep7Uri}
         stellarNetwork={stellarNetwork}
+        horizonUrl={getHorizonUrl()}
+        networkPassphrase={getNetworkPassphrase()}
         verifiedOnChain={paidOnChain}
         registeredOnChain={registeredOnChain}
         registerTxHash={link.registerTxHash}

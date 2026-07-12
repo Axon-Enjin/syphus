@@ -191,14 +191,16 @@ async function readContract(
   }
 }
 
-function parseLinkRecord(val: xdr.ScVal): OnChainLinkRecord | null {
+export function parseLinkRecord(val: xdr.ScVal): OnChainLinkRecord | null {
   try {
     const raw = scValToNative(val) as Record<string, unknown>;
     if (!raw || typeof raw !== "object") return null;
 
+    // Unit enum variants decode as a one-element array, e.g. ["Paid"]
     const statusRaw = raw.status;
+    const statusName = Array.isArray(statusRaw) ? statusRaw[0] : statusRaw;
     const status =
-      statusRaw === "Paid" || statusRaw === 1 ? "paid" : "registered";
+      statusName === "Paid" || statusName === 1 ? "paid" : "registered";
 
     const amount =
       raw.amount == null ? null : stroopsToUsdc(BigInt(String(raw.amount)));

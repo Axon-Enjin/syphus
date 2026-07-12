@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { BrandMark } from "@/components/brand-mark";
-import { OnboardingBanner } from "@/components/ui-interactive";
 import {
   primaryNavLinks,
   secondaryNavLinks,
@@ -94,18 +93,16 @@ function SidebarLink({
 export function DashboardShell({
   children,
   onboardingComplete,
-  currentStep,
-  totalSteps,
+  userEmail,
 }: {
   children: React.ReactNode;
   onboardingComplete: boolean;
-  currentStep: number;
-  totalSteps: number;
+  /** Server-provided email — avoids useSession hydration mismatch */
+  userEmail?: string | null;
 }) {
   const pathname = usePathname();
-  const { data: session } = useSession();
-  const email = session?.user?.email;
   const isOnboarding = !onboardingComplete;
+  const email = userEmail?.trim() || null;
 
   if (isOnboarding) {
     return (
@@ -117,8 +114,7 @@ export function DashboardShell({
           </div>
           <SignOutButton />
         </header>
-        <OnboardingBanner currentStep={currentStep} totalSteps={totalSteps} />
-        <div className="container-app py-8">{children}</div>
+        <div className="container-app onboard-shell-content">{children}</div>
       </div>
     );
   }

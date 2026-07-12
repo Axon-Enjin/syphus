@@ -58,16 +58,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.sub = user.id;
         token.trustlineReady =
           (user as { trustlineReady?: boolean }).trustlineReady ?? false;
         token.tier = (user as { tier?: string }).tier ?? "solo";
       }
-      // Session update (Node only) — refresh trustline from DB
-      if (trigger === "update" && token.sub) {
-        token.trustlineReady = await getTrustlineReadyForUser(token.sub);
+      // Session update (Node only) — prefer explicit payload, else refresh from DB
+      if (trigger === "update") {
+        const payload = session as { trustlineReady?: boolean } | undefined;
+        if (typeof payload?.trustlineReady === "boolean") {
+          token.trustlineReady = payload.trustlineReady;
+        } else if (token.sub) {
+          token.trustlineReady = await getTrustlineReadyForUser(token.sub);
+        }
       }
       return token;
     },

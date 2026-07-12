@@ -83,7 +83,8 @@ export function TrustlineCheck({
       setLoading(false);
       return;
     }
-    await update();
+    // Unlock middleware: JWT must learn trustlineReady before /dashboard links work
+    await update({ trustlineReady: true });
     onSuccess?.();
     router.refresh();
     setLoading(false);

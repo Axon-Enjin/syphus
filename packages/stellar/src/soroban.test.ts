@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { nativeToScVal } from "@stellar/stellar-sdk";
 import {
   isSorobanEnabled,
+  parseLinkRecord,
   toRegistrySymbol,
   usdcToStroops,
 } from "./soroban";
@@ -16,6 +18,40 @@ describe("soroban helpers", () => {
     expect(usdcToStroops("500")).toBe(BigInt(500_0000000));
     expect(usdcToStroops("1.5")).toBe(BigInt(1_5000000));
     expect(usdcToStroops("0.0000001")).toBe(BigInt(1));
+  });
+
+  it("parseLinkRecord decodes unit enum status variants (['Paid'])", () => {
+    const val = nativeToScVal({
+      creator: "GBZMYSACL7VI5KELKL227GBYOGBMKXVIQC3HOWSJLXGEHPWOD5ER6MSQ",
+      destination: "GBZMYSACL7VI5KELKL227GBYOGBMKXVIQC3HOWSJLXGEHPWOD5ER6MSQ",
+      amount: 125000000,
+      memo: "invoice",
+      status: ["Paid"],
+      register_ts: 1783834594,
+      paid_tx_hash: "deadbeef",
+    });
+
+    const record = parseLinkRecord(val);
+    expect(record?.status).toBe("paid");
+    expect(record?.amount).toBe("12.5");
+    expect(record?.paidTxHash).toBe("deadbeef");
+  });
+
+  it("parseLinkRecord decodes ['Registered'] as registered", () => {
+    const val = nativeToScVal({
+      creator: "GBZMYSACL7VI5KELKL227GBYOGBMKXVIQC3HOWSJLXGEHPWOD5ER6MSQ",
+      destination: "GBZMYSACL7VI5KELKL227GBYOGBMKXVIQC3HOWSJLXGEHPWOD5ER6MSQ",
+      amount: null,
+      memo: null,
+      status: ["Registered"],
+      register_ts: 1783834594,
+      paid_tx_hash: null,
+    });
+
+    const record = parseLinkRecord(val);
+    expect(record?.status).toBe("registered");
+    expect(record?.amount).toBeNull();
+    expect(record?.paidTxHash).toBeNull();
   });
 
   it("isSorobanEnabled is false without env", () => {

@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { AddressDisplay } from "@/components/ui-interactive";
 import { KycStatusCard } from "@/components/kyc-status-card";
+import { WalletFreighterLink } from "@/components/dashboard/wallet-freighter-link";
 
 interface WalletStatusPanelProps {
   publicKey: string;
   trustlineReady: boolean;
   anchorKycComplete: boolean;
+  isExternal: boolean;
 }
 
 export function WalletStatusPanel({
   publicKey,
   trustlineReady,
   anchorKycComplete,
+  isExternal,
 }: WalletStatusPanelProps) {
   return (
     <section className="surface-card space-y-4 p-6">
@@ -53,6 +56,11 @@ export function WalletStatusPanel({
       </div>
 
       <KycStatusCard complete={anchorKycComplete} compact />
+
+      <WalletFreighterLink
+        currentPublicKey={publicKey}
+        isExternal={isExternal}
+      />
     </section>
   );
 }
