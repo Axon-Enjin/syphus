@@ -23,6 +23,8 @@ test.describe("Public landing", () => {
     await expect(page.getByText("Create account")).toBeVisible();
     await expect(page.getByText("Share a link")).toBeVisible();
     await expect(page.getByText("Withdraw to bank").first()).toBeVisible();
+    await expect(page.getByText("Stellar address")).toBeVisible();
+    await expect(page.getByText("PHP payout")).toBeVisible();
   });
 
   test("home page shows calculator and faq", async ({ page }) => {
