@@ -1292,6 +1292,28 @@ code,
     gap: 1.25rem;
     align-items: stretch;
   }
+
+  .landing-fees__hero {
+    height: 100%;
+  }
+
+  .landing-fees__hero-spacer {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .landing-fees__comparisons {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .landing-fees__card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .landing-fees__hero {
@@ -1334,19 +1356,72 @@ code,
   max-width: 38ch;
 }
 
-.landing-fees__hero-chips {
+.landing-fees__hero-savings {
+  margin-top: 1rem;
+  padding: 0.625rem 0.875rem;
+  background: color-mix(in srgb, #fff 8%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 14%, transparent);
+  border-radius: 0.875rem;
+}
+
+.landing-fees__hero-spacer {
+  display: none;
+}
+
+.landing-fees__hero-savings-row {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, #fff 72%, transparent);
+}
+
+.landing-fees__hero-savings-row + .landing-fees__hero-savings-row {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, #fff 12%, transparent);
+}
+
+.landing-fees__hero-savings-row--syphus {
+  color: #fff;
+  font-weight: 500;
+}
+
+.landing-fees__hero-savings-row--syphus span:last-child {
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .landing-fees__hero-savings-row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .landing-fees__hero-chips {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .landing-fees__hero-spacer {
+    display: block;
+  }
+}
+
+.landing-fees__hero-chips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.625rem;
-  margin-top: auto;
-  padding-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .landing-fees__hero-chip {
-  padding: 0.5rem 0.75rem;
+  padding: 0.625rem 0.75rem;
   background: color-mix(in srgb, #fff 12%, transparent);
   border: 1px solid color-mix(in srgb, #fff 18%, transparent);
   border-radius: 0.75rem;
+  text-align: center;
 }
 
 .landing-fees__hero-chip-label {

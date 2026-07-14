@@ -256,6 +256,17 @@ export default function HomePage() {
                   Clients pay in USDC on Stellar. You withdraw to GCash or your bank
                   without waiting days for international wires.
                 </p>
+                <div className="landing-fees__hero-spacer" aria-hidden="true" />
+                <div className="landing-fees__hero-savings">
+                  <div className="landing-fees__hero-savings-row">
+                    <span>Typical wire on ₱50,000</span>
+                    <span>~₱1,500 fee + 3 to 5 days</span>
+                  </div>
+                  <div className="landing-fees__hero-savings-row landing-fees__hero-savings-row--syphus">
+                    <span>With Syphus</span>
+                    <span>Network fee + ~30 seconds</span>
+                  </div>
+                </div>
                 <div className="landing-fees__hero-chips">
                   {feeHighlights.map((chip) => (
                     <div key={chip.label} className="landing-fees__hero-chip">
